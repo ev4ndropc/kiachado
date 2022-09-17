@@ -13,6 +13,7 @@
     "@emotion/react": "11",
     "@emotion/styled": "11",
     "bcrypt": "^5.0.1",
+    "cheerio": "^1.0.0-rc.12",
     "cookies-next": "^2.1.1",
     "framer-motion": "6",
     "jsonwebtoken": "^8.5.1",
