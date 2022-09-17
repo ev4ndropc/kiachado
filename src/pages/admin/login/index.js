@@ -61,7 +61,7 @@ export default function Login() {
         <Main justifyContent="center" alignItems="center">
             <Head pageTitle="Login"/>
 
-            <Flex  w="100%" maxW="420px" flexDir="column">
+            <Flex  w="100%" maxW="420px" flexDir="column" p={4}>
                 <Flex justifyContent="center" alignItems="center">
                     <Img maxW="180px" src="/images/logo.png" alt="Logo"/>
                 </Flex>
