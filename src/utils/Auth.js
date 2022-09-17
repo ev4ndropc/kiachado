@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-module.exports = (request, response, next) => {
+module.exports = (request, response) => {
   const authHeader = request.headers.authorization
 
   if(!authHeader)
@@ -21,8 +21,8 @@ module.exports = (request, response, next) => {
 
     request._id = decoded._id
     request.email = decoded.email
-
-    return next()
   })
+
+  return { ok: true }
 
 }
