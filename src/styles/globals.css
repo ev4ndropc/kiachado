@@ -21,6 +21,31 @@ a {
   box-sizing: border-box;
 }
 
+input:focus-visible, input[data-focus-visible] {
+  border-color: var(--chakra-colors-orange-500)!important;
+  box-shadow: 0 0 0 1px var(--chakra-colors-orange-500)!important;
+}
+
+.chakra-modal__content-container {
+  padding: 1rem;
+}
+@media only screen and (max-width: 768px) {
+  .container_footer {
+    grid-template-columns: '1fr';
+  }
+
+  .footer_col {
+    display: flex!important;
+    justify-content: center!important;
+    align-items: center!important;
+  }
+  .copyright {
+    text-align: center;
+  }
+
+}
+
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;

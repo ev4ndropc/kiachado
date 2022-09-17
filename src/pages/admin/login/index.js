@@ -65,7 +65,7 @@ export default function Login() {
                 <Flex justifyContent="center" alignItems="center">
                     <Img maxW="180px" src="/images/logo.png" alt="Logo"/>
                 </Flex>
-                <Flex w="100%" borderRadius="md" boxShadow="md" p={4} bg="white" mt={4}>
+                <Flex w="100%" borderRadius="md" boxShadow="md" p={8} bg="white" mt={4}>
                     <chakra.form w="100%" onSubmit={handleLogin}>
                         <FormControl>
                             <FormLabel>Email</FormLabel>

@@ -419,7 +419,7 @@ export default function Home() {
                 </Flex>
             </Flex>
 
-            <Modal isOpen={isOpenAddProduct} onClose={onCloseModal} isCentered size="lg">
+            <Modal isOpen={isOpenAddProduct} onClose={onCloseModal} size="lg">
                 <ModalOverlay backdropFilter="blur(10px)" />
                 <ModalContent>
                     <ModalHeader>Adicionar Produto</ModalHeader>
@@ -538,7 +538,7 @@ export default function Home() {
             </Modal>
 
 
-            <Modal isOpen={isOpenEditProduct} onClose={onCloseModal} isCentered size="lg">
+            <Modal isOpen={isOpenEditProduct} onClose={onCloseModal} size="lg">
                 <ModalOverlay backdropFilter="blur(10px)" />
                 <ModalContent>
                     <ModalHeader>Editar Produto</ModalHeader>
@@ -550,7 +550,7 @@ export default function Home() {
                                 <Flex w="100%" justifyContent="center" alignItems="cente" flexDir="column">
 
                                     <Flex>
-                                        <Img maxW="320px" src={`https://cf.shopee.com.br/file/${productImage}`} alt="" />
+                                        <Img maxW="220px" src={`https://cf.shopee.com.br/file/${productImage}`} alt="" />
                                     </Flex>
 
 
@@ -605,7 +605,7 @@ export default function Home() {
                                 <Flex w="100%" justifyContent="center" alignItems="cente" flexDir="column">
 
                                 <Flex>
-                                    <Img maxW="320px" src={productImage} alt={productName} />
+                                    <Img maxW="220px" src={productImage} alt={productName} />
                                 </Flex>
 
 
