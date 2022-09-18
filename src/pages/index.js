@@ -1,4 +1,17 @@
-import { Box, Button, Container, Flex, Heading, Icon, SimpleGrid, Stack, Text, useColorModeValue } from '@chakra-ui/react'
+import { useEffect, useState } from 'react';
+import { 
+  Box, 
+  Button, 
+  Container, 
+  Flex, 
+  Heading, 
+  Icon, 
+  Input, 
+  SimpleGrid, 
+  Stack, 
+  Text, 
+  useColorModeValue
+} from '@chakra-ui/react'
 
 import Head from '../components/Head'
 import Topbar from '../components/Topbar';
@@ -10,6 +23,20 @@ import Logo from '../assets/logo.png'
 import config from '../config';
 
 export default function Home({ products }) {
+
+  const [searchTerm, setSearchTerm] = useState('')
+  const [searchList, setSearchList] = useState('')
+
+  useEffect(() => {
+    if(products) {
+      const newList = [...products]
+      const newListFilter = newList.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()))
+      setSearchList(newListFilter)
+    }
+
+
+  }, [searchTerm])
+
   return (
     <Main>
       <Head />
@@ -26,10 +53,10 @@ export default function Home({ products }) {
               as={Box}
               textAlign={'center'}
               spacing={{ base: 8, md: 14 }}
-              py={{ base: 20, md: 36 }}>
+              py={20}>
               <Heading
                 fontWeight={600}
-                fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
+                fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
                 fontFamily="'Poppins', sans-serif!important"
                 lineHeight={'110%'}>
                 Os melhores achados da internet <br />
@@ -41,18 +68,42 @@ export default function Home({ products }) {
                 Nós encontramos e listamos os produtos mais inovadores, com o melhor preço e o melhor vendedor.
                 Tudo para que você não tenha dor de cabeça na hora de sua compra.
               </Text>
+              <Stack>
+                <Input 
+                  type="search" 
+                  placeholder="Procurar por produto" 
+                  borderColor="orange.500" 
+                  borderRadius={32} 
+                  size="lg" 
+                  value={searchTerm} 
+                  onChange={(e) => setSearchTerm(e.target.value)} 
+                />
+              </Stack>
             </Stack>
           </Container>
 
           <Box p={4}>
             <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} spacing={10}>
-              {products.map(product => {
-                return (
-                  <Stack key={product.id}>
-                    <ProductCard product={product} />
-                  </Stack>
-                )
-              })}
+              {searchTerm == '' ? (
+                products &&
+                products.map(product => {
+                  return (
+                    <Stack key={product.id}>
+                      <ProductCard product={product} />
+                    </Stack>
+                  )
+                })
+              ):
+              (
+                searchList.map(product => {
+                  return (
+                    <Stack key={product.id}>
+                      <ProductCard product={product} />
+                    </Stack>
+                  )
+                })
+              )
+              }
             </SimpleGrid>
           </Box>
 
