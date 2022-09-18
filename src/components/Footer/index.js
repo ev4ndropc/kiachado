@@ -9,10 +9,11 @@ import {
     VisuallyHidden,
     Input,
     IconButton,
-    useColorModeValue,
     Img,
+    useColorModeValue,
+    useToast
 } from '@chakra-ui/react';
-import { ReactNode } from 'react';
+import { ReactNode, useState } from 'react';
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
 import { BiMailSend } from 'react-icons/bi';
 
@@ -58,6 +59,50 @@ const ListHeader = ({ children }) => {
 };
 
 export default function Footer() {
+    const toast = useToast()
+
+    const [isLoading, setIsLoading] = useState(false)
+    const [email, setEmail] = useState('')
+
+    const handleSubmitNewsletter = async () => {
+        if(email.trim() == '' || !email.includes('@')) {
+            return toast({
+                status: 'error',
+                title: 'E-mail inválid, por favor, tente novamente',
+                isClosable: true,
+
+            })
+        }
+        setIsLoading(true)
+        const response = await fetch(`/api/newsletter`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body:JSON.stringify({
+                email
+            })
+        })
+        const json = await response.json()
+        setIsLoading(false)
+        if(json.ok) {
+            setEmail('')
+            return toast({
+                status: 'success',
+                title: 'Obrigado por assinar nossa newsletter!',
+                description: 'Não se preocupe, nós não enviamos SPAM.',
+                isClosable: true,
+
+            })
+        }else{
+            return toast({
+                status: 'error',
+                title: 'Ocorreu um erro, tente novamente por favor.',
+                isClosable: true,
+            })
+        }
+    }
+
     return (
         <Box
             bg="linear-gradient(62deg, #FBAB7E 0%, #F7CE68 50%, #F7CE68 100%)"
@@ -96,13 +141,20 @@ export default function Footer() {
                         <ListHeader>Mantenha-se atualizado</ListHeader>
                         <Stack direction={'row'}>
                             <Input
+                                type="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                                 colorScheme="orange"
                                 bg="white"
                                 placeholder={'Seu endereço de email'}
+                                required
+                                disabled={isLoading}
                             />
                             <IconButton
+                                onClick={handleSubmitNewsletter}
                                 bg={useColorModeValue('orange.400', 'orange.800')}
                                 color={useColorModeValue('white', 'gray.800')}
+                                isLoading={isLoading}
                                 _hover={{
                                     bg: 'orange.600',
                                 }}

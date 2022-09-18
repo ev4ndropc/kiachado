@@ -48,7 +48,7 @@ export default function Home({ products }) {
             <SimpleGrid columns={{ base: 1, md: 3, lg: 4 }} spacing={10}>
               {products.map(product => {
                 return (
-                  <Stack>
+                  <Stack key={product.id}>
                     <ProductCard product={product} />
                   </Stack>
                 )
