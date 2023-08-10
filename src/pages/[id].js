@@ -1,9 +1,9 @@
 import config from "../config"
 
 export default function Home() {
-  return (
-    <></>
-  )
+    return (
+        <></>
+    )
 }
 
 export async function getServerSideProps({ req, res, params }) {
@@ -16,18 +16,18 @@ export async function getServerSideProps({ req, res, params }) {
                 destination: "/"
             }
         }
-    }else{
+    } else {
         const response = await fetch(`${config.BASE_URL}/api/products/redirect?id=${id}`)
         const json = await response.json()
-        if(json.ok) {
-            if(json.data.affiliateLink) {
+        if (json.ok) {
+            if (json?.data?.affiliateLink) {
                 return {
                     redirect: {
                         permanent: false,
                         destination: json.data.affiliateLink
                     }
                 }
-            }else{
+            } else {
                 return {
                     redirect: {
                         permanent: false,
@@ -35,7 +35,7 @@ export async function getServerSideProps({ req, res, params }) {
                     }
                 }
             }
-        }else{
+        } else {
             return {
                 redirect: {
                     permanent: false,
