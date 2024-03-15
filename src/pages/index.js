@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
-import { 
-  Box, 
-  Button, 
-  Container, 
-  Flex, 
-  Heading, 
-  Icon, 
-  Input, 
-  SimpleGrid, 
-  Stack, 
-  Text, 
+import {
+  Box,
+  Button,
+  Container,
+  Flex,
+  Heading,
+  Icon,
+  Input,
+  SimpleGrid,
+  Stack,
+  Text,
   useColorModeValue
 } from '@chakra-ui/react'
 
@@ -28,7 +28,7 @@ export default function Home({ products }) {
   const [searchList, setSearchList] = useState('')
 
   useEffect(() => {
-    if(products) {
+    if (products) {
       const newList = [...products]
       const newListFilter = newList.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()))
       setSearchList(newListFilter)
@@ -69,14 +69,14 @@ export default function Home({ products }) {
                 Tudo para que você não tenha dor de cabeça na hora de sua compra.
               </Text>
               <Stack>
-                <Input 
-                  type="search" 
-                  placeholder="Procurar por produto" 
-                  borderColor="orange.500" 
-                  borderRadius={32} 
-                  size="lg" 
-                  value={searchTerm} 
-                  onChange={(e) => setSearchTerm(e.target.value)} 
+                <Input
+                  type="search"
+                  placeholder="Procurar por produto"
+                  borderColor="orange.500"
+                  borderRadius={32}
+                  size="lg"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </Stack>
             </Stack>
@@ -93,16 +93,16 @@ export default function Home({ products }) {
                     </Stack>
                   )
                 })
-              ):
-              (
-                searchList.map(product => {
-                  return (
-                    <Stack key={product.id}>
-                      <ProductCard product={product} />
-                    </Stack>
-                  )
-                })
-              )
+              ) :
+                (
+                  searchList.map(product => {
+                    return (
+                      <Stack key={product.id}>
+                        <ProductCard product={product} />
+                      </Stack>
+                    )
+                  })
+                )
               }
             </SimpleGrid>
           </Box>

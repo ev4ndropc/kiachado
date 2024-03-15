@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 
 import {
+    chakra,
     Flex,
     Text,
     FormControl,
@@ -21,36 +22,48 @@ import {
     InputGroup,
     InputRightElement,
     IconButton,
-    Table,
-    Thead,
-    Tbody,
-    Tfoot,
-    Tr,
-    Th,
-    Td,
-    TableContainer,
-    chakra,
+    Box,
+    Grid,
+    Link,
+    HStack,
+    VStack,
+    Divider,
+    Center,
+    Tooltip,
+    AlertDialog,
+    AlertDialogBody,
+    AlertDialogOverlay,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogFooter,
+    Icon,
+    Heading,
+    Badge,
+    UnorderedList,
+    ListItem
 } from "@chakra-ui/react"
 import { getCookie } from "cookies-next"
-import StarRatingComponent from 'react-star-rating-component';
+import Rating from 'react-rating';
 import moment from 'moment'
 import 'moment/locale/pt-br'
 
 import { BsPlusCircle } from "react-icons/bs"
 import { BiSearch } from 'react-icons/bi'
-import { AiFillStar, AiOutlineLink, AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai'
+import { AiFillStar, AiOutlineLink, AiOutlineDelete, AiOutlineEdit, AiOutlineCopy } from 'react-icons/ai'
 
 import Head from "../../../components/Head"
 import Main from "../../../components/Main"
 
 import config from "../../../config";
+import PanelTopbar from "../../../components/PanelTopbar";
 
-export default function Home() {
+export default function Products() {
     const toast = useToast();
     const token = getCookie("token")
 
     const { isOpen: isOpenAddProduct, onOpen: onOpenAddProduct, onClose: onCloseAddProduct } = useDisclosure()
     const { isOpen: isOpenEditProduct, onOpen: onOpenEditProduct, onClose: onCloseEditProduct } = useDisclosure()
+    const { isOpen: isOpenDeleteAlert, onOpen: onOpenDeleteAlert, onClose: onCloseDeleteAlert } = useDisclosure()
 
     const [isLoading, setIsLoading] = useState(false)
 
@@ -65,6 +78,7 @@ export default function Home() {
     const [productPlatform, setProductPlatform] = useState('')
     const [productRating, setProductRating] = useState('')
     const [productAffiliateLink, setProductAffiliateLink] = useState('')
+    const [deleteProductID, setDeleteProductID] = useState('')
 
     const getProducts = async () => {
         const response = await fetch(`/api/products/list?limit=${limit}&offset=${offset}`, {
@@ -110,7 +124,7 @@ export default function Home() {
                 setProductPlatform('Amazon')
                 setProductImage(json.data.productImage)
                 setProductName(json.data.productName)
-                setProductRating(json.data.productRating)
+                setProductRating(parseFloat(json.data.productRating.replace(',', '.')).toFixed(1))
             } else {
                 return toast({
                     status: 'error',
@@ -225,14 +239,14 @@ export default function Home() {
         const json = await response.json()
         setIsLoading(false)
 
-        if(json.ok) {
+        if (json.ok) {
             toast({
                 status: 'success',
                 title: 'Produto editado com sucesso!'
             })
             getProducts()
             return onCloseModal()
-        }else{
+        } else {
             toast({
                 status: 'error',
                 title: json.message
@@ -249,16 +263,18 @@ export default function Home() {
             },
         })
 
-        const json = await response.json()
         setIsLoading(false)
+        const json = await response.json()
 
         if (json.ok) {
             toast({
                 status: 'success',
                 title: json.data
             })
+            onCloseModal()
             return getProducts()
         } else {
+            onCloseModal()
             toast({
                 status: 'error',
                 title: json.message
@@ -266,15 +282,26 @@ export default function Home() {
         }
     }
 
+    const handleCopyToClipboard = async (text) => {
+        await navigator.clipboard.writeText(text)
+        return toast({
+            status: 'success',
+            title: 'Link copiado para a área de transferência.'
+        })
+    }
+
     const onCloseModal = () => {
         onCloseAddProduct()
         onCloseEditProduct()
+        onCloseDeleteAlert()
         setProductInfo([])
         setProductLink('')
         setProductImage('')
         setProductName('')
         setProductRating('')
         setProductPlatform('')
+        setDeleteProductID(null)
+
     }
 
     useEffect(() => {
@@ -283,34 +310,32 @@ export default function Home() {
 
     return (
         <Main justifyContent="center" alignItems="center">
-            <Head pageTitle="Dashboard" />
+            <Head pageTitle="Produtos" />
             <Flex w="100%" h="100%" justifyContent="center" alignItems="center" flexDir="column" p={4}>
-                <Flex>
-                    <Img maxW="220px" src="/images/logo.png" alt="Logo" />
-                </Flex>
+                <PanelTopbar />
                 <Flex
                     w="100%"
-                    maxW="1366px"
-                    maxH="800px"
+                    h="100%"
                     alignItems="flex-start"
                     flexDir="column"
-                    bg="white"
+                    bg="gray.50"
                     borderRadius="md"
                     boxShadow="md"
-                    mt={4}
                     p={4}
+                    mt={4}
                     minH={40}
                     overflowY="scroll"
                 >
-                    <Flex w="100%" justifyContent="flex-end">
+                    <Flex w="100%" className="add-product" justifyContent="space-between" alignItems="center">
+                        <Text>Produtos cadastrados: <chakra.span fontWeight="bold">{products.data.length}</chakra.span></Text>
                         <Button leftIcon={<BsPlusCircle />} colorScheme="orange" onClick={onOpenAddProduct}>Adicionar Produto</Button>
                     </Flex>
 
                     {products.isLoading
                         ?
-                        <Flex w="100%" justifyContent="center" alignItems="center" mt={4} flexDir="column">
+                        <Flex w="100%" h="100vh" justifyContent="center" alignItems="center" mt={4} flexDir="column">
                             <Spinner size="lg" />
-                            <Text fontSize="20px">Carregando...</Text>
+                            <Text fontSize="20px" mt={2}>Carregando...</Text>
                         </Flex>
                         : products.data.length == 0
 
@@ -320,104 +345,141 @@ export default function Home() {
                             </Flex>
                             :
                             <Flex w="100%" mt={4} flexDir="column">
-                                <TableContainer>
-                                    <Table variant="striped" colorScheme="orange">
-                                        <Thead>
-                                            <Tr>
-                                                <Th>Id</Th>
-                                                <Th>Informações</Th>
-                                                <Th>Ações</Th>
-                                            </Tr>
-                                        </Thead>
-                                        <Tbody>
-                                            {products.data.map((product, index) => {
-                                                return (
-                                                    <Tr key={index}>
-                                                        <Td>
-                                                            <Flex alignItems="center" flexDir="row">
-                                                                <Text>#{product.id}</Text>
-                                                                <Img ml={4} w="80px" h="80px" minW="80px" minH="80px" src={product.image} alt={product.name} />
-                                                            </Flex>
-                                                        </Td>
-                                                        <Td>
-                                                            <Flex flexDir="column">
-                                                                <Flex maxW="400px" overflow="hidden">
-                                                                    <Text fontWeight="bold" textTransform="capitalize">Nome:</Text>
-                                                                    <Text ml={2} title={product.name}>{product.name}</Text>
-                                                                </Flex>
+                                <Grid templateColumns="repeat(auto-fill, minmax(300px, 1fr))" gap={6}>
+                                    {products.data.map((product, index) => {
+                                        return (
+                                            <Box key={index} borderWidth="1px" borderRadius="lg" bg="white" overflow="hidden" boxShadow="md">
+                                                <Center mt={6}>
+                                                    <Img w="150px" h="150px" objectFit="contain" src={product.image} alt={product.name} />
+                                                </Center>
+                                                <Box p="6">
 
-                                                                <Flex mt={2}>
-                                                                    <Text fontWeight="bold">Link:</Text>
-                                                                    <chakra.a ml={2} href={product.link} target="_bank" rel="noreferrer"> <AiOutlineLink size="22px" /> </chakra.a>
-                                                                </Flex>
+                                                    <VStack d="flex" alignItems="baseline" h="42px">
+                                                        <Tooltip label={product.name}>
+                                                            <Heading fontSize={'lg'} fontFamily={'body'} textTransform="capitalize" fontWeight={500} noOfLines={2}>
+                                                                {product.name}
+                                                            </Heading>
+                                                        </Tooltip>
+                                                    </VStack>
 
-                                                                <Flex mt={2}>
-                                                                    <Text fontWeight="bold">Link de afiliado:</Text>
-                                                                    <chakra.a ml={2} href={product.affiliateLink} target="_bank" rel="noreferrer">{product.affiliateLink ? product.affiliateLink : 'Sem link'}</chakra.a>
-                                                                </Flex>
+                                                    <Divider mt={2} />
 
-                                                                <Flex mt={2} minW="120px">
-                                                                    <Text fontWeight="bold">Nota:</Text>
-                                                                    <Flex flexDir="row" alignItems="center" ml={2}>
-                                                                        <StarRatingComponent
-                                                                            name="stars"
-                                                                            starCount={5}
-                                                                            value={Number(parseFloat(product.rating).toFixed(1))}
-                                                                            editing={false}
-                                                                            renderStarIcon={() => <AiFillStar size="14px" />}
-                                                                            onChange={() => null}
-                                                                        />
-                                                                        <Flex ml={2}>{parseFloat(product.rating).toFixed(1)}</Flex>
-                                                                    </Flex>
-                                                                </Flex>
+                                                    <HStack mt={2} alignItems="center">
+                                                        <Text fontWeight="bold">Id:</Text>
+                                                        <Text fontWeight="bold" fontSize="lg" mr={2}>{product.id}</Text>
+                                                    </HStack>
 
-                                                                <Flex mt={2} alignItems="center">
-                                                                    <Text fontWeight="bold">Plataforma:</Text>
-                                                                    <Flex ml={2}>
-                                                                        {product.platform == 'Shopee' ? (
-                                                                            <Img maxW="64px" src="/images/shopee-logo.png" alt={`${product.platform} logo`} />
-                                                                        ) : (
-                                                                            <Img maxW="64px" src="/images/amazon-logo.png" alt={`${product.platform} logo`} />
-                                                                        )}
+                                                    <Divider mt={2} />
 
-                                                                    </Flex>
-                                                                </Flex>
+                                                    <Flex mt={2} alignItems="center">
+                                                        <Text fontWeight="bold">Link:</Text>
+                                                        <HStack>
+                                                            <Link ml={2} href={product.link} target="_blank" rel="noreferrer">
+                                                                <AiOutlineLink size="22px" />
+                                                            </Link>
+                                                            <Link ml={2} onClick={() => handleCopyToClipboard(product.link)}>
+                                                                <AiOutlineCopy size="22px" />
+                                                            </Link>
+                                                        </HStack>
+                                                    </Flex>
 
-                                                                <Flex mt={2}>
-                                                                    <Text fontWeight="bold">Cliques:</Text>
-                                                                    <Text ml={2}>{product.clicks}</Text>
-                                                                </Flex>
+                                                    <Divider mt={2} />
 
-                                                                <Flex mt={2}>
-                                                                    <Text fontWeight="bold">Data de criação:</Text>
-                                                                    <Text ml={2}>{moment(product.createdAt).format('LL')}</Text>
-                                                                </Flex>
+                                                    <Flex mt={2} alignItems="center">
+                                                        <Text fontWeight="bold">Link de afiliado:</Text>
+                                                        {product.affiliateLink ?
+                                                            <HStack>
+                                                                <Link ml={2} href={product.affiliateLink} target="_blank" rel="noreferrer">
+                                                                    <AiOutlineLink size="22px" />
+                                                                </Link>
+                                                                <Link ml={2} onClick={() => handleCopyToClipboard(product.affiliateLink)}>
+                                                                    <AiOutlineCopy size="22px" />
+                                                                </Link>
+                                                            </HStack>
+                                                            :
+                                                            <Badge ml={2} colorScheme="red" variant="outline">Sem link</Badge>
+                                                        }
+                                                    </Flex>
 
-                                                            </Flex>
-                                                        </Td>
-                                                        <Td>
-                                                            <Flex flexDir="row">
-                                                                <Button mx={1} colorScheme="blue" leftIcon={<AiOutlineEdit />} onClick={() => openModalEdit(product.id)}>Editar</Button>
-                                                                <Button
-                                                                    mx={1}
-                                                                    colorScheme="red"
-                                                                    onClick={() => handleDeleteProduct(product.id)}
-                                                                    leftIcon={<AiOutlineDelete />}
-                                                                >
-                                                                    Deletar
-                                                                </Button>
-                                                            </Flex>
-                                                        </Td>
-                                                    </Tr>
-                                                )
-                                            })}
-                                        </Tbody>
-                                    </Table>
-                                </TableContainer>
+                                                    <Divider mt={2} />
+
+                                                    <Flex mt={2} alignItems="center">
+                                                        <Text fontWeight="bold">Nota:</Text>
+                                                        <Flex ml={1} mt={1}>
+                                                            <Rating
+                                                                initialRating={Number(parseFloat(product.rating).toFixed(1))}
+                                                                emptySymbol={<Icon w={6} h={6} as={AiFillStar} />}
+                                                                fullSymbol={<Icon w={6} h={6} color="yellow.500" as={AiFillStar} />}
+                                                                onChange={(rate) => null}
+                                                                quiet
+                                                            />
+                                                        </Flex>
+                                                        <Text ml={2}>{parseFloat(product.rating).toFixed(1)}</Text>
+                                                    </Flex>
+
+                                                    <Divider mt={2} />
+
+                                                    <HStack mt={2} alignItems="center">
+                                                        <Text fontWeight="bold">Plataforma:</Text>
+                                                        <Img mt={"3!important"} maxW="64px" src={product.platform === 'Shopee' ? "/images/shopee-logo.png" : "/images/amazon-logo.png"} alt={`${product.platform} logo`} />
+                                                    </HStack>
+                                                    <Flex mt={2}>
+                                                        <Text fontWeight="bold">Cliques:</Text>
+                                                        <Text ml={2}>{product.clicks}</Text>
+                                                    </Flex>
+
+                                                    <Divider mt={2} />
+
+                                                    <Flex mt={2}>
+                                                        <Text fontWeight="bold">Data de criação:</Text>
+                                                        <Text ml={2}>{moment(product.createdAt).format('LL')}</Text>
+                                                    </Flex>
+
+                                                    <Divider mt={2} />
+
+                                                    <Flex mt={4} justifyContent="center">
+                                                        <Button mr={2} colorScheme="blue" leftIcon={<AiOutlineEdit />} onClick={() => openModalEdit(product.id)}>Editar</Button>
+                                                        <Button colorScheme="red" leftIcon={<AiOutlineDelete />} onClick={() => {
+                                                            setDeleteProductID(product.id)
+                                                            onOpenDeleteAlert()
+                                                        }}>Deletar</Button>
+                                                    </Flex>
+                                                </Box>
+                                            </Box>
+                                        )
+                                    })}
+                                </Grid>
                             </Flex>
                     }
                 </Flex>
             </Flex>
+
+            <AlertDialog
+                isOpen={isOpenDeleteAlert}
+                onClose={onCloseDeleteAlert}
+                isCentered
+            >
+                <AlertDialogOverlay>
+                    <AlertDialogContent>
+                        <AlertDialogHeader fontSize='lg' fontWeight='bold'>
+                            Deletar Produto
+                        </AlertDialogHeader>
+
+                        <AlertDialogBody>
+                            Tem certeza? Você não pode desfazer esta ação posteriormente.
+                        </AlertDialogBody>
+
+                        <AlertDialogFooter>
+                            <Button onClick={onCloseDeleteAlert}>
+                                Cancelar
+                            </Button>
+                            <Button colorScheme='red' onClick={() => handleDeleteProduct(deleteProductID)} ml={3}>
+                                Deletar
+                            </Button>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialogOverlay>
+            </AlertDialog>
 
             <Modal isOpen={isOpenAddProduct} onClose={onCloseModal} size="lg">
                 <ModalOverlay backdropFilter="blur(10px)" />
@@ -440,14 +502,15 @@ export default function Home() {
                             {productInfo &&
                                 productLink.includes('shopee')
                                 ?
-                                <Flex w="100%" justifyContent="center" alignItems="cente" flexDir="column">
+                                <Flex w="100%" justifyContent="center" alignItems="cente" flexDir="column" mt={6}>
                                     {productImage &&
-                                        <Flex>
-                                            <Img maxW="320px" src={`https://cf.shopee.com.br/file/${productImage}`} alt="" />
+                                        <Flex flexDir="column">
+                                            <FormLabel>Imagem</FormLabel>
+                                            <Img w="150px" h="150px" objectFit="contain" src={`https://cf.shopee.com.br/file/${productImage}`} alt="" />
                                         </Flex>
                                     }
                                     {productName &&
-                                        <Flex mt={2}>
+                                        <Flex mt={4}>
                                             <FormControl>
                                                 <FormLabel>Nome do produto</FormLabel>
                                                 <Input type="text" textTransform="capitalize" value={productName} />
@@ -455,17 +518,16 @@ export default function Home() {
                                         </Flex>
                                     }
                                     {productRating &&
-                                        <Flex mt={2}>
+                                        <Flex mt={4}>
                                             <FormControl>
                                                 <FormLabel>Nota</FormLabel>
                                                 <Flex flexDir="row" alignItems="center">
-                                                    <StarRatingComponent
-                                                        name="stars"
-                                                        starCount={5}
-                                                        value={Number(parseFloat(productRating).toFixed(1))}
-                                                        editing={false}
-                                                        renderStarIcon={() => <AiFillStar size="20px" />}
-                                                        onChange={() => null}
+                                                    <Rating
+                                                        initialRating={Number(parseFloat(productRating).toFixed(1))}
+                                                        emptySymbol={<Icon w={6} h={6} as={AiFillStar} />}
+                                                        fullSymbol={<Icon w={6} h={6} color="yellow.500" as={AiFillStar} />}
+                                                        onChange={(rate) => null}
+                                                        quiet
                                                     />
                                                     <Flex ml={2}>{parseFloat(productRating).toFixed(1)}</Flex>
                                                 </Flex>
@@ -473,7 +535,7 @@ export default function Home() {
                                         </Flex>
                                     }
                                     {productPlatform &&
-                                        <Flex mt={2}>
+                                        <Flex mt={4}>
                                             <FormControl>
                                                 <FormLabel>Plataforma</FormLabel>
                                                 <Img maxW="120px" src="/images/shopee-logo.png" alt="Shopee logo" />
@@ -482,14 +544,15 @@ export default function Home() {
                                     }
                                 </Flex>
                                 :
-                                <Flex w="100%" justifyContent="center" alignItems="cente" flexDir="column">
+                                <Flex w="100%" justifyContent="center" alignItems="cente" flexDir="column" mt={6}>
                                     {productImage &&
-                                        <Flex>
-                                            <Img maxW="320px" src={productImage} alt="" />
+                                        <Flex flexDir="column">
+                                            <FormLabel>Imagem</FormLabel>
+                                            <Img w="150px" h="150px" objectFit="contain" src={productImage} alt="" />
                                         </Flex>
                                     }
                                     {productName &&
-                                        <Flex mt={2}>
+                                        <Flex mt={4}>
                                             <FormControl>
                                                 <FormLabel>Nome do produto</FormLabel>
                                                 <Input type="text" textTransform="capitalize" value={productName} />
@@ -497,25 +560,25 @@ export default function Home() {
                                         </Flex>
                                     }
                                     {productRating &&
-                                        <Flex mt={2}>
+                                        <Flex mt={4}>
                                             <FormControl>
                                                 <FormLabel>Nota</FormLabel>
                                                 <Flex flexDir="row" alignItems="center">
-                                                    <StarRatingComponent
-                                                        name="stars"
-                                                        starCount={5}
-                                                        value={Number(parseFloat(productRating).toFixed(1))}
-                                                        editing={false}
-                                                        renderStarIcon={() => <AiFillStar size="20px" />}
-                                                        onChange={() => null}
+                                                    <Rating
+                                                        initialRating={Number(parseFloat(productRating).toFixed(1))}
+                                                        emptySymbol={<Icon w={6} h={6} as={AiFillStar} />}
+                                                        fullSymbol={<Icon w={6} h={6} color="yellow.500" as={AiFillStar} />}
+                                                        onChange={(rate) => null}
+                                                        quiet
                                                     />
+
                                                     <Flex ml={2}>{parseFloat(productRating).toFixed(1)}</Flex>
                                                 </Flex>
                                             </FormControl>
                                         </Flex>
                                     }
                                     {productPlatform &&
-                                        <Flex mt={2}>
+                                        <Flex mt={4}>
                                             <FormControl>
                                                 <FormLabel>Plataforma</FormLabel>
                                                 <Img maxW="120px" src="/images/amazon-logo.png" alt="Amazon logo" />
@@ -550,7 +613,7 @@ export default function Home() {
                                 <Flex w="100%" justifyContent="center" alignItems="cente" flexDir="column">
 
                                     <Flex>
-                                        <Img maxW="220px" src={`https://cf.shopee.com.br/file/${productImage}`} alt="" />
+                                        <Img w="150px" h="150px" objectFit="contain" src={`https://cf.shopee.com.br/file/${productImage}`} alt="" />
                                     </Flex>
 
 
@@ -565,14 +628,14 @@ export default function Home() {
                                     <Flex mt={2}>
                                         <FormControl>
                                             <FormLabel>Link de afiliado</FormLabel>
-                                            <Input type="text" value={productAffiliateLink ? productAffiliateLink : ''} onChange={(e) => setProductAffiliateLink(e.target.value)} />
+                                            <Input type="text" placeholder="Seu link de afiliado" value={productAffiliateLink ? productAffiliateLink : ''} onChange={(e) => setProductAffiliateLink(e.target.value)} />
                                         </FormControl>
                                     </Flex>
 
                                     <Flex mt={2}>
                                         <FormControl>
                                             <FormLabel>Nome do produto</FormLabel>
-                                            <Input type="text" textTransform="capitalize" value={productName}  onChange={(e) => setProductName(e.target.value)} />
+                                            <Input type="text" textTransform="capitalize" value={productName} onChange={(e) => setProductName(e.target.value)} />
                                         </FormControl>
                                     </Flex>
 
@@ -580,13 +643,12 @@ export default function Home() {
                                         <FormControl>
                                             <FormLabel>Nota</FormLabel>
                                             <Flex flexDir="row" alignItems="center">
-                                                <StarRatingComponent
-                                                    name="stars"
-                                                    starCount={5}
-                                                    value={Number(parseFloat(productRating).toFixed(1))}
-                                                    editing={false}
-                                                    renderStarIcon={() => <AiFillStar size="20px" />}
-                                                    onChange={() => null}
+                                                <Rating
+                                                    initialRating={Number(parseFloat(productRating).toFixed(1))}
+                                                    emptySymbol={<Icon w={6} h={6} as={AiFillStar} />}
+                                                    fullSymbol={<Icon w={6} h={6} color="yellow.500" as={AiFillStar} />}
+                                                    onChange={(rate) => null}
+                                                    quiet
                                                 />
                                                 <Flex ml={2}>{parseFloat(productRating).toFixed(1)}</Flex>
                                             </Flex>
@@ -604,58 +666,57 @@ export default function Home() {
                                 :
                                 <Flex w="100%" justifyContent="center" alignItems="cente" flexDir="column">
 
-                                <Flex>
-                                    <Img maxW="220px" src={productImage} alt={productName} />
+                                    <Flex>
+                                        <Img maxW="220px" src={productImage} alt={productName} />
+                                    </Flex>
+
+
+                                    <Flex mt={2}>
+                                        <FormControl>
+                                            <FormLabel>Link do produto</FormLabel>
+                                            <Input type="text" value={productLink} onChange={(e) => setProductLink(e.target.value)} />
+                                        </FormControl>
+                                    </Flex>
+
+
+                                    <Flex mt={2}>
+                                        <FormControl>
+                                            <FormLabel>Link de afiliado</FormLabel>
+                                            <Input type="text" placeholder="Seu link de afiliado" value={productAffiliateLink ? productAffiliateLink : ''} onChange={(e) => setProductAffiliateLink(e.target.value)} />
+                                        </FormControl>
+                                    </Flex>
+
+                                    <Flex mt={2}>
+                                        <FormControl>
+                                            <FormLabel>Nome do produto</FormLabel>
+                                            <Input type="text" textTransform="capitalize" value={productName} onChange={(e) => setProductName(e.target.value)} />
+                                        </FormControl>
+                                    </Flex>
+
+                                    <Flex mt={2}>
+                                        <FormControl>
+                                            <FormLabel>Nota</FormLabel>
+                                            <Flex flexDir="row" alignItems="center">
+                                                <Rating
+                                                    initialRating={Number(parseFloat(productRating).toFixed(1))}
+                                                    emptySymbol={<Icon w={6} h={6} as={AiFillStar} />}
+                                                    fullSymbol={<Icon w={6} h={6} color="yellow.500" as={AiFillStar} />}
+                                                    onChange={(rate) => null}
+                                                    quiet
+                                                />
+                                                <Flex ml={2}>{parseFloat(productRating).toFixed(1)}</Flex>
+                                            </Flex>
+                                        </FormControl>
+                                    </Flex>
+
+                                    <Flex mt={2}>
+                                        <FormControl>
+                                            <FormLabel>Plataforma</FormLabel>
+                                            <Img maxW="120px" src="/images/amazon-logo.png" alt="Shopee logo" />
+                                        </FormControl>
+                                    </Flex>
+
                                 </Flex>
-
-
-                                <Flex mt={2}>
-                                    <FormControl>
-                                        <FormLabel>Link do produto</FormLabel>
-                                        <Input type="text" value={productLink} onChange={(e) => setProductLink(e.target.value)} />
-                                    </FormControl>
-                                </Flex>
-
-
-                                <Flex mt={2}>
-                                    <FormControl>
-                                        <FormLabel>Link de afiliado</FormLabel>
-                                        <Input type="text" value={productAffiliateLink ? productAffiliateLink : ''} onChange={(e) => setProductAffiliateLink(e.target.value)} />
-                                    </FormControl>
-                                </Flex>
-
-                                <Flex mt={2}>
-                                    <FormControl>
-                                        <FormLabel>Nome do produto</FormLabel>
-                                        <Input type="text" textTransform="capitalize" value={productName}  onChange={(e) => setProductName(e.target.value)} />
-                                    </FormControl>
-                                </Flex>
-
-                                <Flex mt={2}>
-                                    <FormControl>
-                                        <FormLabel>Nota</FormLabel>
-                                        <Flex flexDir="row" alignItems="center">
-                                            <StarRatingComponent
-                                                name="stars"
-                                                starCount={5}
-                                                value={Number(parseFloat(productRating).toFixed(1))}
-                                                editing={false}
-                                                renderStarIcon={() => <AiFillStar size="20px" />}
-                                                onChange={() => null}
-                                            />
-                                            <Flex ml={2}>{parseFloat(productRating).toFixed(1)}</Flex>
-                                        </Flex>
-                                    </FormControl>
-                                </Flex>
-
-                                <Flex mt={2}>
-                                    <FormControl>
-                                        <FormLabel>Plataforma</FormLabel>
-                                        <Img maxW="120px" src="/images/amazon-logo.png" alt="Shopee logo" />
-                                    </FormControl>
-                                </Flex>
-
-                            </Flex>
 
                             }
                         </Flex>

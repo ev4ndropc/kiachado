@@ -65,7 +65,7 @@ export default function Footer() {
     const [email, setEmail] = useState('')
 
     const handleSubmitNewsletter = async () => {
-        if(email.trim() == '' || !email.includes('@')) {
+        if (email.trim() == '' || !email.includes('@')) {
             return toast({
                 status: 'error',
                 title: 'E-mail inválid, por favor, tente novamente',
@@ -79,13 +79,13 @@ export default function Footer() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body:JSON.stringify({
+            body: JSON.stringify({
                 email
             })
         })
         const json = await response.json()
         setIsLoading(false)
-        if(json.ok) {
+        if (json.ok) {
             setEmail('')
             return toast({
                 status: 'success',
@@ -94,7 +94,7 @@ export default function Footer() {
                 isClosable: true,
 
             })
-        }else{
+        } else {
             return toast({
                 status: 'error',
                 title: 'Ocorreu um erro, tente novamente por favor.',
@@ -117,7 +117,7 @@ export default function Footer() {
                             <Logo color={useColorModeValue('gray.700', 'white')} />
                         </Box>
                         <Text fontSize={'sm'} className="copyright">
-                            © 2020-2022 Ki Achado. Todos os direitos reservados
+                            © 2020-{new Date().getFullYear()} Ki Achado. Todos os direitos reservados
                         </Text>
                         <Stack direction={'row'} spacing={6}>
                             <SocialButton label={'Twitter'} href={'https://www.tiktok.com/@kiachado'} target="_bank">

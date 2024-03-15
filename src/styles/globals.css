@@ -5,7 +5,7 @@ body {
   padding: 0;
   margin: 0;
   height: 100%;
-  font-family: 'Poppins', sans-serif!important;
+  font-family: 'Poppins', sans-serif !important;
 }
 
 #__next {
@@ -21,35 +21,95 @@ a {
   box-sizing: border-box;
 }
 
-input:focus-visible, input[data-focus-visible] {
-  border-color: var(--chakra-colors-orange-500)!important;
-  box-shadow: 0 0 0 1px var(--chakra-colors-orange-500)!important;
+input:focus-visible,
+input[data-focus-visible] {
+  border-color: var(--chakra-colors-orange-500) !important;
+  box-shadow: 0 0 0 1px var(--chakra-colors-orange-500) !important;
 }
 
 .chakra-modal__content-container {
   padding: 1rem;
 }
+
+/* Estilizando a scrollbar apenas em navegadores WebKit */
+::-webkit-scrollbar {
+  width: 8px;
+  /* Largura da scrollbar */
+}
+
+/* Estilizando o track da scrollbar (a área não preenchida pela scrollbar) */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  /* Cor de fundo do track */
+}
+
+/* Estilizando o thumb da scrollbar (a parte preenchida da scrollbar que o usuário pode arrastar) */
+::-webkit-scrollbar-thumb {
+  background: #878484b0;
+  /* Cor do thumb */
+}
+
+/* Estilizando o thumb quando o usuário estiver hover sobre ele */
+::-webkit-scrollbar-thumb:hover {
+  background: #555555a3;
+  /* Cor do thumb quando hover */
+}
+
+.panel-topbar .mobile-only {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0px;
+  z-index: 1000;
+  background-color: white;
+  transition: 0.3s;
+  max-width: 320px;
+}
+
+.panel-topbar .mobile-only ul {
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 0;
+}
+
+
+
+
+
+
 @media only screen and (max-width: 768px) {
   .container_footer {
     grid-template-columns: '1fr';
   }
 
   .footer_col {
-    display: flex!important;
-    justify-content: center!important;
-    align-items: center!important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
   }
+
   .copyright {
     text-align: center;
   }
 
 }
 
+@media only screen and (max-width: 488px) {
+  .add-product {
+    flex-direction: column !important;
+  }
+
+  .add-product button {
+    margin-top: 4px;
+  }
+}
 
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
   }
+
   body {
     color: white;
     background: black;

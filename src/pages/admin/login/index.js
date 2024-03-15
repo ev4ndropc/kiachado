@@ -22,7 +22,7 @@ export default function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault()
-
+        setIsLoading(true)
         try {
             const response = await fetch('/api/login', {
                 method: 'POST',
@@ -34,18 +34,18 @@ export default function Login() {
                     password,
                 })
             })
-            const json = await response.json()
             setIsLoading(false)
+            const json = await response.json()
 
-            if(json.ok) {
+            if (json.ok) {
                 toast({
                     status: 'success',
                     description: json.message,
                     duration: 3000
                 })
-                setCookie('token', json.token, { maxAge: 1000*60*60*24*3 })
-                return router.push('/admin/home')
-            }else{
+                setCookie('token', json.token, { maxAge: 1000 * 60 * 60 * 24 * 3 })
+                return router.push('/admin/produtos')
+            } else {
                 return toast({
                     status: 'error',
                     description: json.message,
@@ -53,24 +53,30 @@ export default function Login() {
                 })
             }
 
-        }catch(error) {
+        } catch (error) {
             console.log(error)
+            setIsLoading(false)
+            return toast({
+                status: 'error',
+                description: error.message,
+                duration: 3000
+            })
         }
     }
-    return(
+    return (
         <Main justifyContent="center" alignItems="center">
-            <Head pageTitle="Login"/>
+            <Head pageTitle="Login" />
 
-            <Flex  w="100%" maxW="420px" flexDir="column" p={4}>
+            <Flex w="100%" maxW="420px" flexDir="column" p={4}>
                 <Flex justifyContent="center" alignItems="center">
-                    <Img maxW="180px" src="/images/logo.png" alt="Logo"/>
+                    <Img maxW="180px" src="/images/logo.png" alt="Logo" />
                 </Flex>
                 <Flex w="100%" borderRadius="md" boxShadow="md" p={8} bg="white" mt={4}>
                     <chakra.form w="100%" onSubmit={handleLogin}>
                         <FormControl>
                             <FormLabel>Email</FormLabel>
-                            <Input 
-                                type="email" 
+                            <Input
+                                type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 placeholder="email@example.com"
@@ -79,10 +85,10 @@ export default function Login() {
                         </FormControl>
                         <FormControl mt={2}>
                             <FormLabel>Senha</FormLabel>
-                            <Input 
-                                type="password" 
-                                value={password} 
-                                onChange={(e) => setPassword(e.target.value)} 
+                            <Input
+                                type="password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                                 placeholder="***********"
                                 disabled={isLoading}
                             />

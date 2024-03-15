@@ -9,8 +9,9 @@ import {
     Img,
     Flex,
     Button,
+    Icon
 } from '@chakra-ui/react';
-import StarRatingComponent from 'react-star-rating-component';
+import Rating from 'react-rating';
 import { AiFillStar } from 'react-icons/ai'
 import { BsCart2 } from 'react-icons/bs'
 
@@ -29,7 +30,6 @@ export default function ProductCard({ product }) {
                 zIndex={1}>
                 <Flex
                     rounded={'lg'}
-                    mt={-12}
                     pos={'relative'}
                     height={'161px'}
                     justifyContent={'center'}
@@ -42,7 +42,8 @@ export default function ProductCard({ product }) {
                         top: 5,
                         left: 0,
                         backgroundImage: `url(${product.image})`,
-                        filter: 'blur(15px)',
+                        filter: 'blur(25px)',
+                        opacity: 0.0,
                         zIndex: -1,
                     }}
                     _groupHover={{
@@ -54,34 +55,33 @@ export default function ProductCard({ product }) {
                         rounded={'lg'}
                         height={161}
                         width={197}
-                        objectFit={'cover'}
+                        objectFit={'contain'}
                         src={product.image}
                     />
                 </Flex>
                 <Stack pt={10} align={'center'}>
                     {product.platform == 'Shopee' &&
-                        <Img w="100px" src="/images/shopee-logo.png" alt="Shopee logo"/>
+                        <Img w="100px" src="/images/shopee-logo.png" alt="Shopee logo" />
                     }
                     {product.platform == 'Amazon' &&
-                        <Img w="100px" src="/images/amazon-logo.png" alt="Amazon logo"/>
+                        <Img w="100px" src="/images/amazon-logo.png" alt="Amazon logo" />
                     }
                     <Heading fontSize={'lg'} fontFamily={'body'} textTransform="capitalize" fontWeight={500} noOfLines={2}>
                         {product.name}
                     </Heading>
                     <Flex flexDir="row" alignItems="center">
-                        <StarRatingComponent
-                            name="stars"
-                            starCount={5}
-                            value={Number(parseFloat(product.rating).toFixed(1))}
-                            editing={false}
-                            renderStarIcon={() => <AiFillStar size="20px" />}
-                            onChange={() => null}
+                        <Rating
+                            initialRating={Number(parseFloat(product.rating).toFixed(1))}
+                            emptySymbol={<Icon w={6} h={6} as={AiFillStar} />}
+                            fullSymbol={<Icon w={6} h={6} color="yellow.500" as={AiFillStar} />}
+                            onChange={(rate) => null}
+                            quiet
                         />
                         <Flex ml={2}>{parseFloat(product.rating).toFixed(1)}</Flex>
                     </Flex>
                 </Stack>
                 <Stack mt={4}>
-                    <Button as={Link} href={product.affiliateLink} leftIcon={<BsCart2/>} target="_blank" rel="noreferrer" colorScheme="orange">Comprar agora</Button>
+                    <Button as={Link} href={product.affiliateLink} leftIcon={<BsCart2 />} target="_blank" rel="noreferrer" colorScheme="orange">Comprar agora</Button>
                 </Stack>
             </Box>
         </Center>
