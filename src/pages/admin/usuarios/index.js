@@ -57,16 +57,16 @@ import Main from "../../../components/Main"
 import config from "../../../config";
 import PanelTopbar from "../../../components/PanelTopbar";
 
-export default function Users() {
+export default function Users({ config }) {
     const toast = useToast();
     const token = getCookie("token")
 
 
     return (
         <Main justifyContent="center" alignItems="center">
-            <Head pageTitle="Usuários" />
+            <Head pageTitle="Usuários" config={config} />
             <Flex w="100%" h="100%" justifyContent="center" alignItems="center" flexDir="column" p={4}>
-                <PanelTopbar />
+                <PanelTopbar config={config} />
                 <Flex
                     w="100%"
                     h="100%"
@@ -108,8 +108,12 @@ export async function getServerSideProps({ req, res }) {
         })
         const json = await response.json()
         if (json.ok) {
+            const getConfig = await fetch(`${config.BASE_URL}/api/configuration/get`)
+            const configJson = await getConfig.json()
             return {
-                props: {}
+                props: {
+                    config: configJson.data
+                }
             }
         } else {
             return {

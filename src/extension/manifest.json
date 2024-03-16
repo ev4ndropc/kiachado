@@ -1,0 +1,45 @@
+{
+    "manifest_version": 3,
+    "name": "Amazon Scraper",
+    "version": "1.0",
+    "description": "Uma extensão para extrair dados das páginas da Amazon.",
+    "permissions": [
+        "activeTab",
+        "scripting"
+    ],
+    "host_permissions": [
+        "*://*.amazon.com/*",
+        "*://*.amazon.com.br/*",
+        "*://*.shopee.com.br/*",
+        "*://*.kiachado.com/*"
+    ],
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "images/icon.png",
+            "48": "images/icon.png",
+            "128": "images/icon.png"
+        }
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "icons": {
+        "16": "images/icon.png",
+        "48": "images/icon.png",
+        "128": "images/icon.png"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "*://*.amazon.com/*",
+                "*://*.amazon.com.br/*",
+                "*://*.shopee.com/*",
+                "*://*.shopee.com.br/*"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ]
+}

@@ -4,7 +4,7 @@ export default async function findProducts(request, response) {
 
     try {
 
-        const product = await database.select(["id", "affiliateLink", "image", "name", "rating", "platform"]).from("products").orderBy('createdAt', 'desc')
+        const product = await database.select(["id", "affiliateLink", "image", "name", "rating", "platform"]).from("products").orderBy('created_at', 'desc')
         return response.status(200).json({ ok: true, data: product })
 
 

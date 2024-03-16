@@ -57,7 +57,7 @@ import Main from "../../../components/Main"
 import config from "../../../config";
 import PanelTopbar from "../../../components/PanelTopbar";
 
-export default function Products() {
+export default function Products({ config }) {
     const toast = useToast();
     const token = getCookie("token")
 
@@ -310,9 +310,9 @@ export default function Products() {
 
     return (
         <Main justifyContent="center" alignItems="center">
-            <Head pageTitle="Produtos" />
+            <Head pageTitle="Produtos" config={config} />
             <Flex w="100%" h="100%" justifyContent="center" alignItems="center" flexDir="column" p={4}>
-                <PanelTopbar />
+                <PanelTopbar config={config} />
                 <Flex
                     w="100%"
                     h="100%"
@@ -324,11 +324,11 @@ export default function Products() {
                     p={4}
                     mt={4}
                     minH={40}
-                    overflowY="scroll"
+                    overflowY="hidden"
                 >
                     <Flex w="100%" className="add-product" justifyContent="space-between" alignItems="center">
                         <Text>Produtos cadastrados: <chakra.span fontWeight="bold">{products.data.length}</chakra.span></Text>
-                        <Button leftIcon={<BsPlusCircle />} colorScheme="orange" onClick={onOpenAddProduct}>Adicionar Produto</Button>
+                        <Button leftIcon={<BsPlusCircle />} color={config && config?.theme?.light ? config.theme.light : 'orange'} background={config && config?.theme?.primary ? config.theme.primary : 'orange'} onClick={onOpenAddProduct}>Adicionar Produto</Button>
                     </Flex>
 
                     {products.isLoading
@@ -340,11 +340,11 @@ export default function Products() {
                         : products.data.length == 0
 
                             ?
-                            <Flex w="100%" justifyContent="center" alignItems="center" mt={4} flexDir="column">
+                            <Flex w="100%" h="100vh" justifyContent="center" alignItems="center" mt={4} flexDir="column">
                                 <Text fontSize="20px">Nenhum produto cadastrado ainda!</Text>
                             </Flex>
                             :
-                            <Flex w="100%" mt={4} flexDir="column">
+                            <Flex w="100%" mt={4} flexDir="column" overflow="scroll">
                                 <Grid templateColumns="repeat(auto-fill, minmax(300px, 1fr))" gap={6}>
                                     {products.data.map((product, index) => {
                                         return (
@@ -432,7 +432,7 @@ export default function Products() {
 
                                                     <Flex mt={2}>
                                                         <Text fontWeight="bold">Data de criação:</Text>
-                                                        <Text ml={2}>{moment(product.createdAt).format('LL')}</Text>
+                                                        <Text ml={2}>{moment(product.created_at).format('LL')}</Text>
                                                     </Flex>
 
                                                     <Divider mt={2} />
@@ -754,8 +754,12 @@ export async function getServerSideProps({ req, res }) {
         })
         const json = await response.json()
         if (json.ok) {
+            const getConfig = await fetch(`${config.BASE_URL}/api/configuration/get`)
+            const configJson = await getConfig.json()
             return {
-                props: {}
+                props: {
+                    config: configJson.data
+                }
             }
         } else {
             return {

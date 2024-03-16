@@ -73,10 +73,9 @@ input[data-focus-visible] {
   flex: 0;
 }
 
-
-
-
-
+.topbar-menu {
+  display: none !important;
+}
 
 @media only screen and (max-width: 768px) {
   .container_footer {
@@ -93,6 +92,14 @@ input[data-focus-visible] {
     text-align: center;
   }
 
+  .topbar-menu {
+    display: block !important;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
 }
 
 @media only screen and (max-width: 488px) {
@@ -104,6 +111,9 @@ input[data-focus-visible] {
     margin-top: 4px;
   }
 }
+
+@media only screen and (max-width: 472px) {}
+
 
 @media (prefers-color-scheme: dark) {
   html {

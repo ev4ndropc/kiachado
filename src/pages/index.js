@@ -22,7 +22,7 @@ import ProductCard from '../components/ProductCard';
 import Logo from '../assets/logo.png'
 import config from '../config';
 
-export default function Home({ products }) {
+export default function Home({ products, config }) {
 
   const [searchTerm, setSearchTerm] = useState('')
   const [searchList, setSearchList] = useState('')
@@ -39,8 +39,8 @@ export default function Home({ products }) {
 
   return (
     <Main>
-      <Head />
-      <Topbar />
+      <Head config={config} pageTitle="Lista de produtos" />
+      <Topbar config={config} />
 
       <Flex bg="white" justifyContent="center" alignItems="center" >
         <Flex
@@ -121,9 +121,13 @@ export async function getServerSideProps({ req, res }) {
     const response = await fetch(`${config.BASE_URL}/api/products/listAll`)
     const json = await response.json()
 
+    const getConfig = await fetch(`${config.BASE_URL}/api/configuration/get`)
+    const configJson = await getConfig.json()
+
     return {
       props: {
-        products: json.data
+        products: json.data,
+        config: configJson.data
       }
     }
   } catch (error) {
