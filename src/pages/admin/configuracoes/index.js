@@ -333,7 +333,7 @@ export default function Configuration({ config }) {
                             {compressedLogo ? (
                                 <Img onClick={() => logoRef.current.click()} w="64px" objectFit="contain" src={compressedLogo} />
                             ) : (
-                                <Img onClick={() => logoRef.current.click()} w="64px" objectFit="contain" src={`${siteLogo ? `/images/${siteLogo}` : "https://via.placeholder.com/64"}`} />
+                                <Img onClick={() => logoRef.current.click()} w="64px" objectFit="contain" src={`${siteLogo ? `${siteLogo}` : "https://via.placeholder.com/64"}`} />
                             )}
                             <Input ref={logoRef} onChange={(e) => handleCompressedUpload(e, 'logo')} display="none" type="file" accept="image/*" placeholder="Logo" />
                         </HStack>
@@ -345,7 +345,7 @@ export default function Configuration({ config }) {
                             {compressedFavicon ? (
                                 <Img onClick={() => faviconRef.current.click()} w="64px" objectFit="contain" src={compressedFavicon} />
                             ) : (
-                                <Img onClick={() => faviconRef.current.click()} w="64px" objectFit="contain" src={`${siteFavicon ? `/images/${siteFavicon}` : "https://via.placeholder.com/64"}`} />
+                                <Img onClick={() => faviconRef.current.click()} w="64px" objectFit="contain" src={`${siteFavicon ? `${siteFavicon}` : "https://via.placeholder.com/64"}`} />
                             )}
                             <Input ref={faviconRef} onChange={(e) => handleCompressedUpload(e, 'favicon')} display="none" type="file" accept="image/*" placeholder=" Favicon" />
                         </HStack>

@@ -5,8 +5,8 @@
 exports.up = function (knex) {
     return knex.schema.createTable('configuration', table => {
         table.increments('id').primary();
-        table.string('logo').nullable();
-        table.string('favicon').nullable();
+        table.text('logo').nullable();
+        table.text('favicon').nullable();
         table.string('site_name').nullable();
         table.text('site_description').nullable();
         table.text('site_keys').nullable();
