@@ -7,6 +7,8 @@ import {
   Heading,
   Icon,
   Input,
+  InputGroup,
+  InputLeftElement,
   SimpleGrid,
   Stack,
   Text,
@@ -21,6 +23,7 @@ import ProductCard from '../components/ProductCard';
 
 import Logo from '../assets/logo.png'
 import config from '../config';
+import { BsSearch } from 'react-icons/bs';
 
 export default function Home({ products, config }) {
 
@@ -39,7 +42,7 @@ export default function Home({ products, config }) {
 
   return (
     <Main>
-      <Head config={config} pageTitle="Lista de produtos" />
+      <Head config={config} pageTitle="Inicio" />
       <Topbar config={config} />
 
       <Flex bg="white" justifyContent="center" alignItems="center" >
@@ -60,7 +63,7 @@ export default function Home({ products, config }) {
                 fontFamily="'Poppins', sans-serif!important"
                 lineHeight={'110%'}>
                 Os melhores achados da internet <br />
-                <Text as={'span'} color={'orange.400'}>
+                <Text as={'span'} color={config && config?.theme?.primary ? `${config.theme.primary}!important` : 'green!important'}>
                   você encontra aqui
                 </Text>
               </Heading>
@@ -68,7 +71,13 @@ export default function Home({ products, config }) {
                 Nós encontramos e listamos os produtos mais inovadores, com o melhor preço e o melhor vendedor.
                 Tudo para que você não tenha dor de cabeça na hora de sua compra.
               </Text>
-              <Stack>
+              <InputGroup className='search-product'>
+                <InputLeftElement mt={1}>
+                  <Icon
+                    as={BsSearch}
+                    color="gray.300"
+                  />
+                </InputLeftElement>
                 <Input
                   type="search"
                   placeholder="Procurar por produto"
@@ -78,7 +87,7 @@ export default function Home({ products, config }) {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
-              </Stack>
+              </InputGroup>
             </Stack>
           </Container>
 
@@ -118,10 +127,10 @@ export default function Home({ products, config }) {
 
 export async function getServerSideProps({ req, res }) {
   try {
-    const response = await fetch(`${process.env.BASE_URL}/api/products/listAll`)
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/listAll`)
     const json = await response.json()
 
-    const getConfig = await fetch(`${process.env.BASE_URL}/api/configuration/get`)
+    const getConfig = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/configuration/get`)
     const configJson = await getConfig.json()
 
     return {

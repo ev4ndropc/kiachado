@@ -1,4 +1,4 @@
-const Auth = require('../../../../utils/Auth')
+const Auth = require('../../../utils/Auth')
 
 export default function Login(request, response) {
     const isValid = Auth(request, response)

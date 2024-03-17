@@ -58,13 +58,17 @@ export default function Header({ pageTitle, children, config }) {
                     .css-1mclrct {
                         background: ${config && config?.theme?.primary}!important;
                     }
-                    a.chakra-link:not(..chakra-stack) {
+                    a.chakra-link:not(.chakra-stack *),
+                    a.chakra-link.chakra-button.btn {
                         background: ${config && config?.theme?.primary}!important;
                         color: ${config && config?.theme?.light}!important;
                     }
                     button.chakra-button:not(.edit-button):not(.delete-button) {
                         background: ${config && config?.theme?.primary}!important;
                         color: ${config && config?.theme?.light}!important;
+                    }
+                    .search-product input {
+                        border-color: ${config && config?.theme?.primary}!important;
                     }
                     .css-3yzcwe,
                     input:focus-visible, 

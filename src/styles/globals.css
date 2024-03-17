@@ -71,6 +71,34 @@ a {
   display: none !important;
 }
 
+.react-tel-input .country-list {
+  position: absolute !important;
+  bottom: 36px;
+}
+
+.react-tel-input input {
+  height: 2.5rem !important;
+  border-top-right-radius: 0.375rem !important;
+  border-bottom-right-radius: 0.375rem !important;
+  border-top-left-radius: 0.375rem !important;
+  border-bottom-left-radius: 0.375rem !important;
+}
+
+.react-tel-input .flag-dropdown {
+  border-top-left-radius: 0.375rem !important;
+  border-bottom-left-radius: 0.375rem !important;
+}
+
+
+
+
+
+
+
+
+
+
+
 @media only screen and (max-width: 768px) {
   .container_footer {
     grid-template-columns: '1fr';

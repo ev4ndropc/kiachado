@@ -2,7 +2,6 @@ import {
     Box,
     chakra,
     Container,
-    Link,
     SimpleGrid,
     Stack,
     Text,
@@ -13,9 +12,10 @@ import {
     useColorModeValue,
     useToast
 } from '@chakra-ui/react';
-import { ReactNode, useState } from 'react';
-import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
-import { BiMailSend } from 'react-icons/bi';
+import { useState } from 'react';
+import { BiLogoWhatsapp } from 'react-icons/bi';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 const SocialButton = ({
     children,
@@ -58,10 +58,10 @@ export default function Footer({ config }) {
     const toast = useToast()
 
     const [isLoading, setIsLoading] = useState(false)
-    const [email, setEmail] = useState('')
+    const [whatsapp, setWhatsapp] = useState('')
 
     const handleSubmitNewsletter = async () => {
-        if (email.trim() == '' || !email.includes('@')) {
+        if (whatsapp.trim() == '') {
             return toast({
                 status: 'error',
                 title: 'E-mail inválid, por favor, tente novamente',
@@ -70,19 +70,19 @@ export default function Footer({ config }) {
             })
         }
         setIsLoading(true)
-        const response = await fetch(`/api/newsletter`, {
+        const response = await fetch(`/api/newsletter/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                email
+                whatsapp
             })
         })
         const json = await response.json()
         setIsLoading(false)
         if (json.ok) {
-            setEmail('')
+            setWhatsapp('')
             return toast({
                 status: 'success',
                 title: 'Obrigado por assinar nossa newsletter!',
@@ -157,15 +157,15 @@ export default function Footer({ config }) {
                     <Stack align={'flex-end'} className="footer_col">
                         <ListHeader>Mantenha-se atualizado</ListHeader>
                         <Stack direction={'row'}>
-                            <Input
-                                type="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                                colorScheme="orange"
-                                bg="white"
-                                placeholder={'Seu endereço de email'}
-                                required
+                            <PhoneInput
                                 disabled={isLoading}
+                                placeholder={'Seu Whatsapp'}
+                                required
+                                value={whatsapp}
+                                country={'br'}
+                                onChange={phone => setWhatsapp(phone)}
+                                enableSearch
+                                enableAreaCodes
                             />
                             <IconButton
                                 onClick={handleSubmitNewsletter}
@@ -176,7 +176,7 @@ export default function Footer({ config }) {
                                     bg: 'orange.600',
                                 }}
                                 aria-label="Subscribe"
-                                icon={<BiMailSend />}
+                                icon={<BiLogoWhatsapp />}
                             />
                         </Stack>
                     </Stack>

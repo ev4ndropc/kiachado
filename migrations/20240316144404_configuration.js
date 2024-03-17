@@ -10,8 +10,10 @@ exports.up = function (knex) {
         table.string('site_name').nullable();
         table.text('site_description').nullable();
         table.text('site_keys').nullable();
+        table.text('home_title').nullable();
+        table.text('home_subtitle').nullable();
         table.json('social_networks').nullable();
-        table.json('theme').nullable();
+        table.json('theme').nullable()
         table.text('copyright').nullable();
         table.text('pixel').nullable();
         table.text('custom_javascript').nullable();

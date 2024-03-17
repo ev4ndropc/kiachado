@@ -33,10 +33,7 @@
     "content_scripts": [
         {
             "matches": [
-                "*://*.amazon.com/*",
-                "*://*.amazon.com.br/*",
-                "*://*.shopee.com/*",
-                "*://*.shopee.com.br/*"
+                "<all_urls>"
             ],
             "js": [
                 "content.js"

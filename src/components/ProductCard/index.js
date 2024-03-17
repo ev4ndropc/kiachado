@@ -75,13 +75,14 @@ export default function ProductCard({ product }) {
                             emptySymbol={<Icon w={6} h={6} as={AiFillStar} />}
                             fullSymbol={<Icon w={6} h={6} color="yellow.500" as={AiFillStar} />}
                             onChange={(rate) => null}
+                            readonly
                             quiet
                         />
                         <Flex ml={2}>{parseFloat(product.rating).toFixed(1)}</Flex>
                     </Flex>
                 </Stack>
                 <Stack mt={4}>
-                    <Button as={Link} href={product.affiliateLink} leftIcon={<BsCart2 />} target="_blank" rel="noreferrer" colorScheme="orange">Comprar agora</Button>
+                    <Button className='btn' as={Link} href={product.affiliateLink} leftIcon={<BsCart2 />} target="_blank" rel="noreferrer" colorScheme="orange">Comprar agora</Button>
                 </Stack>
             </Box>
         </Center>

@@ -1,7 +1,6 @@
 import { Container, Flex, Img } from "@chakra-ui/react";
 
 export default function Topbar({ config }) {
-    console.log(config.logo)
     return (
         <Flex
             w="100%"

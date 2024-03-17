@@ -9,6 +9,15 @@ export default function FindProduct() {
 export async function getServerSideProps({ req, res, params }) {
     const id = params.id
 
+    if (Number.isNaN(Number(id))) {
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/"
+            }
+        }
+    }
+
     if (!id) {
         return {
             redirect: {
@@ -17,7 +26,7 @@ export async function getServerSideProps({ req, res, params }) {
             }
         }
     } else {
-        const response = await fetch(`${process.env.BASE_URL}/api/products/redirect?id=${id}`)
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products/redirect?id=${id}`)
         const json = await response.json()
         if (json.ok) {
             if (json?.data?.affiliateLink) {

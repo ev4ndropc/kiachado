@@ -76,33 +76,36 @@ export default function Configuration({ config }) {
     const colorLightRef = useRef(null);
     const colorDarkRef = useRef(null);
 
-    const [siteName, setSiteName] = useState(config && config.site_name ? config.site_name : "");
-    const [siteDescription, setSiteDescription] = useState(config && config.site_description ? config.site_description : "");
-    const [siteKeys, setSiteKeys] = useState(config && config.site_keys ? config.site_keys.split(",").map(chave => chave.trim()) : []);
-    const [siteKeysText, setSiteKeysText] = useState(config && config.site_keys ? config.site_keys : "");
-    const [siteLogo, setSiteLogo] = useState(config && config.logo ? config.logo : "")
-    const [siteFavicon, setSiteFavicon] = useState(config && config.favicon ? config.favicon : "")
-    const [customJavascript, setCustomJavascript] = useState(config && config.custom_javascript ? config.custom_javascript : "console.log('hello world!');")
-    const [customCss, setCustomCss] = useState(config && config.custom_css ? config.custom_css : "")
-    const [copyright, setCopyright] = useState(config && config.copyright ? config.copyright : "")
-    const [pixel, setPixel] = useState(config && config.pixel ? config.pixel : "")
-    const [socialNetworks, setSocialNetworks] = useState(config && config.social_networks ? config.social_networks : {})
-    const [Facebook, setFacebook] = useState(config && config.social_networks ? config?.social_networks?.facebook : "")
-    const [Instagram, setInstagram] = useState(config && config.social_networks ? config?.social_networks?.instagram : "")
-    const [Whatsapp, setWhatsapp] = useState(config && config.social_networks ? config?.social_networks?.whatsapp : "")
-    const [Youtube, setYoutube] = useState(config && config.social_networks ? config?.social_networks?.youtube : "")
-    const [Tiktok, setTiktok] = useState(config && config.social_networks ? config?.social_networks?.tiktok : "")
-    const [Kwai, setKwai] = useState(config && config.social_networks ? config?.social_networks?.kwai : "")
+    const [siteName, setSiteName] = useState(config && config?.site_name ? config.site_name : "");
+    const [siteDescription, setSiteDescription] = useState(config && config?.site_description ? config.site_description : "");
+    const [homeTitle, setHomeTitle] = useState(config && config?.home_title ? config.home_title : "")
+    const [homeSubTitle, setHomeSubTitle] = useState(config && config?.home_subtitle ? config.home_subtitle : "")
+    const [siteKeys, setSiteKeys] = useState(config && config?.site_keys ? config.site_keys.split(",").map(chave => chave.trim()) : []);
+    const [siteKeysText, setSiteKeysText] = useState(config && config?.site_keys ? config.site_keys : "");
+    const [siteLogo, setSiteLogo] = useState(config && config?.logo ? config.logo : "")
+    const [siteFavicon, setSiteFavicon] = useState(config && config?.favicon ? config.favicon : "")
+    const [customJavascript, setCustomJavascript] = useState(config && config?.custom_javascript ? config.custom_javascript : "console.log('hello world!');")
+    const [customCss, setCustomCss] = useState(config && config?.custom_css ? config.custom_css : "")
+    const [copyright, setCopyright] = useState(config && config?.copyright ? config.copyright : "")
+    const [pixel, setPixel] = useState(config && config?.pixel ? config.pixel : "")
+    const [socialNetworks, setSocialNetworks] = useState(config && config?.social_networks ? config.social_networks : {})
+    const [Facebook, setFacebook] = useState(config && config?.social_networks ? config?.social_networks?.facebook : "")
+    const [Instagram, setInstagram] = useState(config && config?.social_networks ? config?.social_networks?.instagram : "")
+    const [Whatsapp, setWhatsapp] = useState(config && config?.social_networks ? config?.social_networks?.whatsapp : "")
+    const [Youtube, setYoutube] = useState(config && config?.social_networks ? config?.social_networks?.youtube : "")
+    const [Tiktok, setTiktok] = useState(config && config?.social_networks ? config?.social_networks?.tiktok : "")
+    const [Kwai, setKwai] = useState(config && config?.social_networks ? config?.social_networks?.kwai : "")
 
     const [compressedLogo, setCompressedLogo] = useState(null)
     const [compressedFavicon, setCompressedFavicon] = useState(null)
 
-    const [primaryColor, setPrimaryColor] = useState(config && config?.theme?.primary ? config?.theme?.primary : "#fbab7e")
-    const [secondaryColor, setSecondaryColor] = useState(config && config?.theme?.secondary ? config?.theme?.secondary : "#f7ce68")
+    const [primaryColor, setPrimaryColor] = useState(config && config?.theme?.primary ? config?.theme?.primary : "#31bf6e")
+    const [secondaryColor, setSecondaryColor] = useState(config && config?.theme?.secondary ? config?.theme?.secondary : "#590ca6")
     const [lightColor, setLightColor] = useState(config && config?.theme?.light ? config?.theme?.light : "#F7FAFC")
     const [darkColor, setDarkColor] = useState(config && config?.theme?.dark ? config?.theme?.dark : "#1a202c")
     const [theme, setTheme] = useState(config && config.theme ? config.theme : "")
     const [themeInlineCss, setThemeInlineCss] = useState('')
+
 
 
     const handleChangeSiteKeys = (e) => {
@@ -301,6 +304,16 @@ export default function Configuration({ config }) {
                     </FormControl>
 
                     <FormControl mt={4}>
+                        <FormLabel>Titulo da página inicial</FormLabel>
+                        <Textarea disabled={isLoading} onChange={(e) => setHomeTitle(e.target.value)} value={homeTitle} placeholder="Título principal" />
+                    </FormControl>
+
+                    <FormControl mt={4}>
+                        <FormLabel>Sub-título da página inicial</FormLabel>
+                        <Textarea disabled={isLoading} onChange={(e) => setHomeSubTitle(e.target.value)} value={homeSubTitle} placeholder="Título secundário, que se segue ao principal" />
+                    </FormControl>
+
+                    <FormControl mt={4}>
                         <FormLabel>Palavras-chave</FormLabel>
                         <Input disabled={isLoading} onChange={handleChangeSiteKeys} value={siteKeysText} placeholder="Palavras-chave" />
                         <Flex flexWrap="wrap">
@@ -445,8 +458,8 @@ export default function Configuration({ config }) {
                             </Flex>
                         </Flex>
                         <FormHelperText color="red.500" cursor="pointer" onClick={() => {
-                            setPrimaryColor("#fbab7e")
-                            setSecondaryColor("#f7ce68")
+                            setPrimaryColor("#31bf6e")
+                            setSecondaryColor("#590ca6")
                             setLightColor("#F7FAFC")
                             setDarkColor("#1a202c")
                         }}>Restaurar o padrão</FormHelperText>
@@ -506,14 +519,14 @@ export async function getServerSideProps({ req, res }) {
     }
 
     try {
-        const response = await fetch(`${process.env.BASE_URL}/api/auth/verify_token`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/verify_token`, {
             headers: {
                 "authorization": `Bearer ${token}`
             }
         })
         const json = await response.json()
         if (json.ok) {
-            const getConfig = await fetch(`${process.env.BASE_URL}/api/configuration/get`)
+            const getConfig = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/configuration/get`)
             const configJson = await getConfig.json()
             return {
                 props: {

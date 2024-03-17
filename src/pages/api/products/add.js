@@ -3,8 +3,8 @@ import 'moment/locale/pt-br'
 import NextCors from 'nextjs-cors';
 
 
-const Auth = require("../../../../utils/Auth")
-const database = require("../../../../database")
+const Auth = require("../../../utils/Auth")
+const database = require("../../../database")
 
 export default async function addProducts(request, response) {
     await NextCors(request, response, {

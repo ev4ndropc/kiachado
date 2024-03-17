@@ -49,13 +49,14 @@ import 'moment/locale/pt-br'
 
 import { BsPlusCircle } from "react-icons/bs"
 import { BiSearch } from 'react-icons/bi'
-import { AiFillStar, AiOutlineLink, AiOutlineDelete, AiOutlineEdit, AiOutlineCopy } from 'react-icons/ai'
+import { AiFillStar, AiOutlineLink, AiOutlineDelete, AiOutlineEdit, AiOutlineCopy, AiFillEye } from 'react-icons/ai'
 
 import Head from "../../../components/Head"
 import Main from "../../../components/Main"
 
 import config from "../../../config";
 import PanelTopbar from "../../../components/PanelTopbar";
+import Reviews from "../../../components/Reviews";
 
 export default function Products({ config }) {
     const toast = useToast();
@@ -63,6 +64,7 @@ export default function Products({ config }) {
 
     const { isOpen: isOpenAddProduct, onOpen: onOpenAddProduct, onClose: onCloseAddProduct } = useDisclosure()
     const { isOpen: isOpenEditProduct, onOpen: onOpenEditProduct, onClose: onCloseEditProduct } = useDisclosure()
+    const { isOpen: isOpenViewReviews, onOpen: onOpenViewReviews, onClose: onCloseViewReviews } = useDisclosure()
     const { isOpen: isOpenDeleteAlert, onOpen: onOpenDeleteAlert, onClose: onCloseDeleteAlert } = useDisclosure()
 
     const [isLoading, setIsLoading] = useState(false)
@@ -79,6 +81,7 @@ export default function Products({ config }) {
     const [productRating, setProductRating] = useState('')
     const [productAffiliateLink, setProductAffiliateLink] = useState('')
     const [deleteProductID, setDeleteProductID] = useState('')
+    const [productReviews, setProductReviews] = useState([])
 
     const getProducts = async () => {
         const response = await fetch(`/api/products/list?limit=${limit}&offset=${offset}`, {
@@ -89,6 +92,7 @@ export default function Products({ config }) {
         const json = await response.json()
         if (json.ok) {
             setProducts({ data: json.data })
+            console.log(json.data)
         } else {
             return toast({
                 status: "error",
@@ -232,6 +236,7 @@ export default function Products({ config }) {
                 id: productId,
                 name: productName,
                 link: productLink,
+                rating: productRating,
                 affiliateLink: productAffiliateLink
             })
         })
@@ -287,6 +292,15 @@ export default function Products({ config }) {
         return toast({
             status: 'success',
             title: 'Link copiado para a área de transferência.'
+        })
+    }
+
+    const openModalReviews = async (id) => {
+        products.data.find(product => {
+            if (product.id == id) {
+                setProductReviews(product.reviews)
+                onOpenViewReviews()
+            }
         })
     }
 
@@ -372,12 +386,24 @@ export default function Products({ config }) {
                                                     <Divider mt={2} />
 
                                                     <Flex mt={2} alignItems="center">
-                                                        <Text fontWeight="bold">Link:</Text>
+                                                        <Text fontWeight="bold">Link do produto:</Text>
                                                         <HStack>
                                                             <Link ml={2} href={product.link} target="_blank" rel="noreferrer">
                                                                 <AiOutlineLink size="22px" />
                                                             </Link>
                                                             <Link ml={2} onClick={() => handleCopyToClipboard(product.link)}>
+                                                                <AiOutlineCopy size="22px" />
+                                                            </Link>
+                                                        </HStack>
+                                                    </Flex>
+
+                                                    <Flex mt={2} alignItems="center">
+                                                        <Text fontWeight="bold">Link de compartilhamento:</Text>
+                                                        <HStack>
+                                                            <Link ml={2} href={`${process.env.NEXT_PUBLIC_BASE_URL}/${product.id}`} target="_blank" rel="noreferrer">
+                                                                <AiOutlineLink size="22px" />
+                                                            </Link>
+                                                            <Link ml={2} onClick={() => handleCopyToClipboard(`${process.env.NEXT_PUBLIC_BASE_URL}/${product.id}`)}>
                                                                 <AiOutlineCopy size="22px" />
                                                             </Link>
                                                         </HStack>
@@ -411,6 +437,7 @@ export default function Products({ config }) {
                                                                 emptySymbol={<Icon w={6} h={6} as={AiFillStar} />}
                                                                 fullSymbol={<Icon w={6} h={6} color="yellow.500" as={AiFillStar} />}
                                                                 onChange={(rate) => null}
+                                                                readonly
                                                                 quiet
                                                             />
                                                         </Flex>
@@ -423,6 +450,7 @@ export default function Products({ config }) {
                                                         <Text fontWeight="bold">Plataforma:</Text>
                                                         <Img mt={"3!important"} maxW="64px" src={product.platform === 'Shopee' ? "/images/shopee-logo.png" : "/images/amazon-logo.png"} alt={`${product.platform} logo`} />
                                                     </HStack>
+
                                                     <Flex mt={2}>
                                                         <Text fontWeight="bold">Cliques:</Text>
                                                         <Text ml={2}>{product.clicks}</Text>
@@ -437,6 +465,31 @@ export default function Products({ config }) {
 
                                                     <Divider mt={2} />
 
+
+                                                    {product?.reviews &&
+                                                        product?.reviews?.length > 0 &&
+                                                        <Flex
+                                                            mt={2}
+                                                            alignItems="center"
+                                                            justifyContent="center"
+                                                            onClick={() => product?.reviews.includes(null) ? null : (product.reviews.length > 0 ? openModalReviews(product?.id) : null)}
+                                                            cursor="pointer"
+                                                            borderWidth="2px"
+                                                            borderColor="transparent"
+                                                            ml="-2px"
+                                                            _hover={{
+                                                                borderColor: config && config.primaryColor ? config.primaryColor : 'blue.500',
+                                                                borderRadius: 'md',
+                                                                color: config && config.primaryColor ? config.primaryColor : 'blue.500',
+                                                            }}
+                                                        >
+                                                            <Text ml={2}>
+                                                                {product?.reviews.includes(null) ? 'Sem' : product?.reviews.length} {product?.reviews.length === 1 ? 'avalição' : 'avalições'}
+                                                            </Text>
+                                                            <Icon ml={2} as={AiFillEye} />
+                                                        </Flex>
+
+                                                    }
                                                     <Flex mt={4} justifyContent="center">
                                                         <Button mr={2} colorScheme="blue" className="edit-button" leftIcon={<AiOutlineEdit />} onClick={() => openModalEdit(product.id)}>Editar</Button>
                                                         <Button colorScheme="red" className="delete-button" leftIcon={<AiOutlineDelete />} onClick={() => {
@@ -527,6 +580,7 @@ export default function Products({ config }) {
                                                         emptySymbol={<Icon w={6} h={6} as={AiFillStar} />}
                                                         fullSymbol={<Icon w={6} h={6} color="yellow.500" as={AiFillStar} />}
                                                         onChange={(rate) => null}
+                                                        readonly
                                                         quiet
                                                     />
                                                     <Flex ml={2}>{parseFloat(productRating).toFixed(1)}</Flex>
@@ -569,6 +623,7 @@ export default function Products({ config }) {
                                                         emptySymbol={<Icon w={6} h={6} as={AiFillStar} />}
                                                         fullSymbol={<Icon w={6} h={6} color="yellow.500" as={AiFillStar} />}
                                                         onChange={(rate) => null}
+                                                        readonly
                                                         quiet
                                                     />
 
@@ -592,14 +647,13 @@ export default function Products({ config }) {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button variant="ghost" onClick={onCloseAddProduct}>Fechar</Button>
-                        <Button colorScheme="green" mr={3} onClick={handleAddProduct} disabled={productInfo == '' ? true : false}>
+                        <Button variant="ghost" className="edit-button" onClick={onCloseAddProduct}>Fechar</Button>
+                        <Button colorScheme="green" className="edit-button" ml={3} onClick={handleAddProduct} disabled={productInfo == '' ? true : false}>
                             Adicionar
                         </Button>
                     </ModalFooter>
                 </ModalContent>
             </Modal>
-
 
             <Modal isOpen={isOpenEditProduct} onClose={onCloseModal} size="lg">
                 <ModalOverlay backdropFilter="blur(10px)" />
@@ -620,7 +674,7 @@ export default function Products({ config }) {
                                     <Flex mt={2}>
                                         <FormControl>
                                             <FormLabel>Link do produto</FormLabel>
-                                            <Input type="text" value={productLink} onChange={(e) => setProductLink(e.target.value)} />
+                                            <Input type="text" isDisabled={isLoading} value={productLink} onChange={(e) => setProductLink(e.target.value)} />
                                         </FormControl>
                                     </Flex>
 
@@ -628,14 +682,14 @@ export default function Products({ config }) {
                                     <Flex mt={2}>
                                         <FormControl>
                                             <FormLabel>Link de afiliado</FormLabel>
-                                            <Input type="text" placeholder="Seu link de afiliado" value={productAffiliateLink ? productAffiliateLink : ''} onChange={(e) => setProductAffiliateLink(e.target.value)} />
+                                            <Input type="text" isDisabled={isLoading} placeholder="Seu link de afiliado" value={productAffiliateLink ? productAffiliateLink : ''} onChange={(e) => setProductAffiliateLink(e.target.value)} />
                                         </FormControl>
                                     </Flex>
 
                                     <Flex mt={2}>
                                         <FormControl>
                                             <FormLabel>Nome do produto</FormLabel>
-                                            <Input type="text" textTransform="capitalize" value={productName} onChange={(e) => setProductName(e.target.value)} />
+                                            <Input type="text" isDisabled={isLoading} textTransform="capitalize" value={productName} onChange={(e) => setProductName(e.target.value)} />
                                         </FormControl>
                                     </Flex>
 
@@ -647,7 +701,7 @@ export default function Products({ config }) {
                                                     initialRating={Number(parseFloat(productRating).toFixed(1))}
                                                     emptySymbol={<Icon w={6} h={6} as={AiFillStar} />}
                                                     fullSymbol={<Icon w={6} h={6} color="yellow.500" as={AiFillStar} />}
-                                                    onChange={(rate) => null}
+                                                    onChange={(rate) => setProductRating(rate)}
                                                     quiet
                                                 />
                                                 <Flex ml={2}>{parseFloat(productRating).toFixed(1)}</Flex>
@@ -674,7 +728,7 @@ export default function Products({ config }) {
                                     <Flex mt={2}>
                                         <FormControl>
                                             <FormLabel>Link do produto</FormLabel>
-                                            <Input type="text" value={productLink} onChange={(e) => setProductLink(e.target.value)} />
+                                            <Input type="text" isDisabled={isLoading} value={productLink} onChange={(e) => setProductLink(e.target.value)} />
                                         </FormControl>
                                     </Flex>
 
@@ -682,14 +736,14 @@ export default function Products({ config }) {
                                     <Flex mt={2}>
                                         <FormControl>
                                             <FormLabel>Link de afiliado</FormLabel>
-                                            <Input type="text" placeholder="Seu link de afiliado" value={productAffiliateLink ? productAffiliateLink : ''} onChange={(e) => setProductAffiliateLink(e.target.value)} />
+                                            <Input type="text" isDisabled={isLoading} placeholder="Seu link de afiliado" value={productAffiliateLink ? productAffiliateLink : ''} onChange={(e) => setProductAffiliateLink(e.target.value)} />
                                         </FormControl>
                                     </Flex>
 
                                     <Flex mt={2}>
                                         <FormControl>
                                             <FormLabel>Nome do produto</FormLabel>
-                                            <Input type="text" textTransform="capitalize" value={productName} onChange={(e) => setProductName(e.target.value)} />
+                                            <Input type="text" isDisabled={isLoading} textTransform="capitalize" value={productName} onChange={(e) => setProductName(e.target.value)} />
                                         </FormControl>
                                     </Flex>
 
@@ -701,7 +755,7 @@ export default function Products({ config }) {
                                                     initialRating={Number(parseFloat(productRating).toFixed(1))}
                                                     emptySymbol={<Icon w={6} h={6} as={AiFillStar} />}
                                                     fullSymbol={<Icon w={6} h={6} color="yellow.500" as={AiFillStar} />}
-                                                    onChange={(rate) => null}
+                                                    onChange={(rate) => setProductRating(rate)}
                                                     quiet
                                                 />
                                                 <Flex ml={2}>{parseFloat(productRating).toFixed(1)}</Flex>
@@ -730,6 +784,23 @@ export default function Products({ config }) {
                     </ModalFooter>
                 </ModalContent>
             </Modal>
+
+            <Modal isOpen={isOpenViewReviews} onClose={onCloseViewReviews} size="lg">
+                <ModalOverlay backdropFilter="blur(10px)" />
+                <ModalContent>
+                    <ModalHeader>Avaliações</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        {(productReviews && productReviews.length > 0) &&
+                            <Reviews reviews={productReviews} />
+                        }
+                    </ModalBody>
+
+                    <ModalFooter>
+                        <Button variant="ghost" className="edit-button" onClick={onCloseViewReviews}>Fechar</Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Main>
     )
 }
@@ -747,7 +818,7 @@ export async function getServerSideProps({ req, res }) {
     }
 
     try {
-        const response = await fetch(`${process.env.BASE_URL}/api/auth/verify_token`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/verify_token`, {
             method: "GET",
             headers: {
                 "authorization": `Bearer ${token}`
@@ -755,7 +826,7 @@ export async function getServerSideProps({ req, res }) {
         })
         const json = await response.json()
         if (json.ok) {
-            const getConfig = await fetch(`${process.env.BASE_URL}/api/configuration/get`)
+            const getConfig = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/configuration/get`)
             const configJson = await getConfig.json()
             return {
                 props: {
