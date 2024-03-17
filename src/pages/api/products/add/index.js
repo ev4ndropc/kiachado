@@ -1,10 +1,19 @@
 import moment from 'moment'
 import 'moment/locale/pt-br'
+import NextCors from 'nextjs-cors';
+
 
 const Auth = require("../../../../utils/Auth")
 const database = require("../../../../database")
 
 export default async function addProducts(request, response) {
+    await NextCors(request, response, {
+        // Options
+        methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+        origin: '*',
+        optionsSuccessStatus: 200, // some legacy browsers (IE11, various SmartTVs) choke on 204
+    });
+
     const isValid = Auth(request, response)
     if (!isValid.ok)
         return response.status(400).json({ ok: false })
