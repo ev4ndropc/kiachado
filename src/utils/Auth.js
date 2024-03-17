@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-export default (request, response) => {
+module.exports = (request, response) => {
   try {
     const authHeader = request.headers.authorization
 
@@ -26,6 +26,7 @@ export default (request, response) => {
 
     return { ok: true }
   } catch (error) {
+    console.log(error)
     return { ok: false }
   }
 
