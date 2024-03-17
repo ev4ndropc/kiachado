@@ -64,6 +64,7 @@ export default function Header({ pageTitle, children, config }) {
                     }
                     button.chakra-button:not(.edit-button):not(.delete-button) {
                         background: ${config && config?.theme?.primary}!important;
+                        color: ${config && config?.theme?.light}!important;
                     }
                     .css-3yzcwe,
                     input:focus-visible, 
