@@ -723,8 +723,8 @@ export default function Products({ config }) {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button variant="ghost" onClick={onCloseEditProduct}>Fechar</Button>
-                        <Button colorScheme="green" mr={3} onClick={handleEditProduct}>
+                        <Button variant="ghost" className="edit-button" onClick={onCloseEditProduct}>Fechar</Button>
+                        <Button colorScheme="green" className="edit-button" ml={3} onClick={handleEditProduct}>
                             Salvar edição
                         </Button>
                     </ModalFooter>
