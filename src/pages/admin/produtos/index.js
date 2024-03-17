@@ -761,7 +761,7 @@ export async function getServerSideProps({ req, res }) {
             const configJson = await getConfig.json()
             return {
                 props: {
-                    config: configJson.data
+                    config: configJson?.data
                 }
             }
         } else {
