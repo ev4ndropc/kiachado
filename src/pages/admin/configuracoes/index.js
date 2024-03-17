@@ -240,6 +240,10 @@ export default function Configuration({ config }) {
         .chakra-text {
             color: ${darkColor}!important;
         }
+        .chakra-button {
+            background: ${primaryColor}!important;
+            color: ${lightColor}!important;
+        }
         `
 
         setThemeInlineCss(css)
