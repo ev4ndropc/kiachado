@@ -17,7 +17,7 @@ export async function getServerSideProps({ req, res, params }) {
             }
         }
     } else {
-        const response = await fetch(`${config.BASE_URL}/api/products/redirect?id=${id}`)
+        const response = await fetch(`${process.env.BASE_URL}/api/products/redirect?id=${id}`)
         const json = await response.json()
         if (json.ok) {
             if (json?.data?.affiliateLink) {

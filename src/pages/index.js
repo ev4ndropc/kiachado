@@ -118,10 +118,10 @@ export default function Home({ products, config }) {
 
 export async function getServerSideProps({ req, res }) {
   try {
-    const response = await fetch(`${config.BASE_URL}/api/products/listAll`)
+    const response = await fetch(`${process.env.BASE_URL}/api/products/listAll`)
     const json = await response.json()
 
-    const getConfig = await fetch(`${config.BASE_URL}/api/configuration/get`)
+    const getConfig = await fetch(`${process.env.BASE_URL}/api/configuration/get`)
     const configJson = await getConfig.json()
 
     return {

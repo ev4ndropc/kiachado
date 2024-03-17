@@ -747,7 +747,7 @@ export async function getServerSideProps({ req, res }) {
     }
 
     try {
-        const response = await fetch(`${config.BASE_URL}/api/auth/verify_token`, {
+        const response = await fetch(`${process.env.BASE_URL}/api/auth/verify_token`, {
             method: "GET",
             headers: {
                 "authorization": `Bearer ${token}`
@@ -755,7 +755,7 @@ export async function getServerSideProps({ req, res }) {
         })
         const json = await response.json()
         if (json.ok) {
-            const getConfig = await fetch(`${config.BASE_URL}/api/configuration/get`)
+            const getConfig = await fetch(`${process.env.BASE_URL}/api/configuration/get`)
             const configJson = await getConfig.json()
             return {
                 props: {
