@@ -18,7 +18,7 @@ export default function Topbar({ config }) {
                 justifyContent="center"
             >
                 <Flex className="logo" justifyContent="center">
-                    <Img w={16} h="auto" src={config && config?.logo ? `/images/${config.logo}` : '/images/logo.png'} />
+                    <Img w={16} h="auto" src={config && config?.logo ? `${config.logo}` : '/images/logo.png'} />
                 </Flex>
             </Container>
         </Flex>

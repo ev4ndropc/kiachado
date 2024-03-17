@@ -70,7 +70,7 @@ export default function Login({ config }) {
 
             <Flex w="100%" maxW="420px" flexDir="column" p={4}>
                 <Flex justifyContent="center" alignItems="center">
-                    <Img w={16} src={config && config?.logo ? `/images/${config.logo}` : "/images/logo.png"} alt="Logo" />
+                    <Img w={16} src={config && config?.logo ? `${config.logo}` : "/images/logo.png"} alt="Logo" />
                 </Flex>
                 <Flex w="100%" borderRadius="md" boxShadow="md" p={8} bg="white" mt={4}>
                     <chakra.form w="100%" onSubmit={handleLogin}>

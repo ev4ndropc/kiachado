@@ -13,7 +13,7 @@ export default function Header({ pageTitle, children, config }) {
         <Head>
             <meta charSet="utf-8" />
             <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-            <link rel="icon" type="image/x-icon" href={config && config?.favicon ? `/images/${config?.favicon}` : '/images/icon.png'} />
+            <link rel="icon" type="image/x-icon" href={config && config?.favicon ? `${config?.favicon}` : '/images/icon.png'} />
             <meta name="description" content={config && config?.site_description ? config?.site_description : ''} />
             <meta name="keywords" content={config && config?.site_keys ? config?.site_keys : ''} />
             <title>{pageTitle ? `${pageTitle} - ${config && config?.site_name ? config?.site_name : ''} ` : config && config?.site_name ? config?.site_name : ''}</title>

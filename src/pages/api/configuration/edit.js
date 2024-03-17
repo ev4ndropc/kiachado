@@ -14,27 +14,10 @@ export default async function EditConfiguration(request, response) {
     try {
         const { logo, favicon, site_name, site_description, site_keys, social_networks, theme, copyright, pixel, custom_javascript, custom_css } = request.body;
 
-        const logo_name = uuidv4() + '.png';
-        const favicon_name = uuidv4() + '.png';
-
-        if (logo && logo != "") {
-            const base64Image = logo.split(';base64,').pop();
-            const buffer = Buffer.from(base64Image, 'base64');
-            const image = await jimp.read(buffer);
-            await image.writeAsync(`public/images/${logo_name}`);
-        }
-
-        if (favicon && favicon != "") {
-            const base64Image = favicon.split(';base64,').pop();
-            const buffer = Buffer.from(base64Image, 'base64');
-            const image = await jimp.read(buffer);
-            await image.writeAsync(`public/images/${favicon_name}`);
-        }
-
         var updateIfExist = {};
 
-        if (logo) updateIfExist.logo = logo_name;
-        if (favicon) updateIfExist.favicon = favicon_name;
+        if (logo) updateIfExist.logo = logo;
+        if (favicon) updateIfExist.favicon = favicon;
         if (site_name) updateIfExist.site_name = site_name;
         if (site_description) updateIfExist.site_description = site_description;
         if (site_keys) updateIfExist.site_keys = site_keys;

@@ -110,7 +110,7 @@ export default function Footer({ config }) {
                     spacing={8}>
                     <Stack spacing={6} className="footer_col">
                         <Box>
-                            <Img w={12} src={config && config?.logo ? `/images/${config.logo}` : '/images/logo.png'} />
+                            <Img w={12} src={config && config?.logo ? `${config.logo}` : '/images/logo.png'} />
                         </Box>
                         <Text fontSize={'sm'} className="copyright">
                             {config && config?.copyright ? config.copyright : ''}

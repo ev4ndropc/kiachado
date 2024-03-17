@@ -57,7 +57,7 @@ export default function PanelTopbar({ config }) {
                 </Flex>
                 <Flex className="desktop-only" flex={1} alignItems="center" justifyContent="space-between">
                     <Flex>
-                        <Img w={16} src={config && config?.logo ? `/images/${config.logo}` : '/images/logo.png'} alt='Logo' />
+                        <Img w={16} src={config && config?.logo ? `${config.logo}` : '/images/logo.png'} alt='Logo' />
                     </Flex>
                     <UnorderedList display="flex" flexDir="row" alignItems="center" listStyleType="none" p={0} m={0}>
                         <ListItem
