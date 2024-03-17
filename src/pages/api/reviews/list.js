@@ -1,4 +1,4 @@
-import Auth from "../../../../utils/Auth"
+import Auth from "../../../utils/Auth"
 import database from '../../../../database'
 
 export default async function listProducts(request, response) {
