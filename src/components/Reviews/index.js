@@ -12,8 +12,8 @@ import Rating from "react-rating";
 export default function Reviews({ reviews }) {
     return (
         <Flex flexDir="column">
-            {reviews.map(review => (
-                <Flex w="100%" flexDir="column">
+            {reviews.map((review, index) => (
+                <Flex key={index} w="100%" flexDir="column">
                     <Flex flexDir="row" alignItems="center" mt={4} mb={2}>
                         <Avatar size="sm" src={review.review_profile_avatar} alt="Shopee logo" />
                         <Text fontSize={14} ml={2}>{review.review_profile_name}</Text>

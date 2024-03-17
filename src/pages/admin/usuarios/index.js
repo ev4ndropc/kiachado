@@ -156,7 +156,7 @@ export default function Users({ config }) {
                                         <Tbody>
                                             {users.data.map((user, index) => {
                                                 return (
-                                                    <Tr>
+                                                    <Tr key={user.id}>
                                                         <Td>{parsePhoneNumber(`${user.whatsapp}`, { regionCode: 'BR' }).number.international}</Td>
                                                         <Td>{moment(user.created_at).format("LLL")}</Td>
                                                         <Td>
