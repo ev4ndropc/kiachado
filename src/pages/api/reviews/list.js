@@ -1,5 +1,5 @@
 import Auth from "../../../utils/Auth"
-import database from '../../../../database'
+import database from '../../../database'
 
 export default async function listProducts(request, response) {
     const { product_id } = request.query
