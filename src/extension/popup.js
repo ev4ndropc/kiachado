@@ -2,10 +2,11 @@
 
 document.addEventListener("DOMContentLoaded", async function () {
     const loginForm = document.querySelector("form");
+    const DEFAULT_URL = "https://www.kiachado.com"
 
     chrome.storage.local.get('token', async (token) => {
         if (token?.token) {
-            const response = await fetch(`https://www.kiachado.com/api/users`, {
+            const response = await fetch(`${DEFAULT_URL}/api/users`, {
                 headers: {
                     "authorization": `Bearer ${token.token}`
                 }
@@ -54,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                         })
                     };
 
-                    const sigin = await fetch('https://www.kiachado.com/api/login', options)
+                    const sigin = await fetch(`https://www.kiachado.com/api/login`, options)
                     const json = await sigin.json();
 
                     if (json.ok) {

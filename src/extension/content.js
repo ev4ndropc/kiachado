@@ -1,5 +1,6 @@
 // Espera até que a página termine de carregar
 window.addEventListener('load', (event) => {
+    const DEFAULT_URL = "https://www.kiachado.com"
 
     if (window.location.hostname.includes("amazon.")) {
 
@@ -17,7 +18,7 @@ window.addEventListener('load', (event) => {
                 if (hasProductPage && token) {
                     var image = document.createElement('img');
                     image.id = 'kiachado-import';
-                    image.src = 'https://www.kiachado.com/images/icon.png'
+                    image.src = `${DEFAULT_URL}/images/icon.png`
                     image.style = 'width: 48px; height: 48px; position: fixed; bottom: 20px; right: 20px; background:#fff;border-radius: 8px;padding:6px; cursor:pointer; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); z-index: 9999;';
                     document.querySelector('body').appendChild(image);
 
@@ -25,11 +26,11 @@ window.addEventListener('load', (event) => {
                         let reviews
                         const product_name = document.querySelector('#productTitle').innerText;
                         const product_image = document.querySelector('#imgTagWrapperId img').src;
-                        const product_rating = document.querySelector('#acrPopover span.a-icon-alt').innerText
+                        const product_rating = document.querySelector('#acrPopover span.a-icon-alt').innerText.split('de')[0].trim().replace(',', '.')
                         const product_url = window.location.href;
                         if (import_reviews) {
                             reviews = Array.from(document.querySelectorAll('.a-section.review')).map(review => {
-                                const review_rating = review.querySelector('.a-icon-alt').innerText
+                                const review_rating = review.querySelector('.a-icon-alt').innerText.split('de')[0].trim().replace(',', '.')
                                 const review_text = review.querySelector('.review-text-content span').innerText
                                 const review_profile_avatar = review.querySelector('.a-profile-avatar img').src
                                 const review_profile_name = review.querySelector('.a-profile-name').innerText
@@ -52,7 +53,7 @@ window.addEventListener('load', (event) => {
                             reviews,
                         }
 
-                        const saveProduct = await fetch('https://www.kiachado.com/api/save-product', {
+                        const saveProduct = await fetch(`${DEFAULT_URL}/api/products/add`, {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json',
