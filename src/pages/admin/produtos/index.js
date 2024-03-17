@@ -741,10 +741,7 @@ export async function getServerSideProps({ req, res }) {
         return {
             redirect: {
                 permanent: false,
-                destination: "/admin/login",
-                query: {
-                    errorMessage: "Você precisa fazer login para acessar esta página."
-                }
+                destination: "/admin/login?errorMessage=Por favor, faça o login",
             }
         }
     }
@@ -761,26 +758,22 @@ export async function getServerSideProps({ req, res }) {
             const configJson = await getConfig.json()
             return {
                 props: {
-                    config: configJson?.data
+                    config: configJson.data
                 }
             }
         } else {
             return {
                 redirect: {
                     permanent: false,
-                    destination: "/admin/login",
-                    query: {
-                        errorMessage: json.message
-                    }
+                    destination: "/admin/login?errorMessage=" + json.message,
                 }
             }
         }
     } catch (error) {
-        console.log(error)
         return {
             redirect: {
                 permanent: false,
-                destination: "/admin/login",
+                destination: "/admin/login?errorMessage=" + error.message,
                 query: {
                     errorMessage: error.message
                 }
