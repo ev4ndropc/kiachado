@@ -1,5 +1,4 @@
-
-import database from '../../../database'
+const database = require('../../../database')
 
 export default async function GetConfiguration(request, response) {
 

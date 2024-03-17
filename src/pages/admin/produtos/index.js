@@ -747,7 +747,8 @@ export async function getServerSideProps({ req, res }) {
     }
 
     try {
-        const response = await fetch(`${config.BASE_URL}/api/users`, {
+        const response = await fetch(`${config.BASE_URL}/api/auth/verify_token`, {
+            method: "GET",
             headers: {
                 "authorization": `Bearer ${token}`
             }
@@ -770,6 +771,7 @@ export async function getServerSideProps({ req, res }) {
             }
         }
     } catch (error) {
+        console.log(error)
         return {
             redirect: {
                 permanent: false,

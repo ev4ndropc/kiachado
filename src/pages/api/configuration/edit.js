@@ -2,8 +2,8 @@ import sharp from 'sharp'
 import path from 'path'
 import { v4 as uuidv4 } from 'uuid';
 
-import database from '../../../database'
-import Auth from "../../../utils/Auth"
+const database = require('../../../database')
+const Auth = require('../../../utils/Auth')
 
 
 export default async function EditConfiguration(request, response) {

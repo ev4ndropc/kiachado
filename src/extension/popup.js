@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", async function () {
 
     chrome.storage.local.get('token', async (token) => {
         if (token?.token) {
-            const response = await fetch(`${DEFAULT_URL}/api/users`, {
+            const response = await fetch(`${DEFAULT_URL}/api/auth/verify_token`, {
                 headers: {
                     "authorization": `Bearer ${token.token}`
                 }

@@ -1,8 +1,8 @@
 import moment from 'moment'
 import 'moment/locale/pt-br'
 
-import Auth from "../../../../utils/Auth"
-import database from '../../../../database'
+const Auth = require("../../../../utils/Auth")
+const database = require("../../../../database")
 
 export default async function addProducts(request, response) {
     const isValid = Auth(request, response)

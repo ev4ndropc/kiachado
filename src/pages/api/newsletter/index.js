@@ -2,7 +2,7 @@
 import moment from "moment/moment"
 import 'moment/locale/pt-br'
 
-import database from "../../../database"
+const database = require("../../../database")
 
 export default async function Newsletter(request, response) {
     const { email } = request.body
