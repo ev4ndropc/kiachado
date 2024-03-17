@@ -438,8 +438,8 @@ export default function Products({ config }) {
                                                     <Divider mt={2} />
 
                                                     <Flex mt={4} justifyContent="center">
-                                                        <Button mr={2} colorScheme="blue" leftIcon={<AiOutlineEdit />} onClick={() => openModalEdit(product.id)}>Editar</Button>
-                                                        <Button colorScheme="red" leftIcon={<AiOutlineDelete />} onClick={() => {
+                                                        <Button mr={2} colorScheme="blue" className="edit-button" leftIcon={<AiOutlineEdit />} onClick={() => openModalEdit(product.id)}>Editar</Button>
+                                                        <Button colorScheme="red" className="delete-button" leftIcon={<AiOutlineDelete />} onClick={() => {
                                                             setDeleteProductID(product.id)
                                                             onOpenDeleteAlert()
                                                         }}>Deletar</Button>
@@ -473,7 +473,7 @@ export default function Products({ config }) {
                             <Button onClick={onCloseDeleteAlert}>
                                 Cancelar
                             </Button>
-                            <Button colorScheme='red' onClick={() => handleDeleteProduct(deleteProductID)} ml={3}>
+                            <Button colorScheme='red' className="delete-button" onClick={() => handleDeleteProduct(deleteProductID)} ml={3}>
                                 Deletar
                             </Button>
                         </AlertDialogFooter>
@@ -741,7 +741,10 @@ export async function getServerSideProps({ req, res }) {
         return {
             redirect: {
                 permanent: false,
-                destination: "/admin/login"
+                destination: "/admin/login",
+                query: {
+                    errorMessage: "Você precisa fazer login para acessar esta página."
+                }
             }
         }
     }
@@ -765,7 +768,10 @@ export async function getServerSideProps({ req, res }) {
             return {
                 redirect: {
                     permanent: false,
-                    destination: "/admin/login"
+                    destination: "/admin/login",
+                    query: {
+                        errorMessage: json.message
+                    }
                 }
             }
         }
@@ -774,7 +780,10 @@ export async function getServerSideProps({ req, res }) {
         return {
             redirect: {
                 permanent: false,
-                destination: "/admin/login"
+                destination: "/admin/login",
+                query: {
+                    errorMessage: error.message
+                }
             }
         }
     }

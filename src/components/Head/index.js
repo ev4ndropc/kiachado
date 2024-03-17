@@ -58,11 +58,11 @@ export default function Header({ pageTitle, children, config }) {
                     .css-1mclrct {
                         background: ${config && config?.theme?.primary}!important;
                     }
-                    a.chakra-link {
+                    a.chakra-link:not(..chakra-stack) {
                         background: ${config && config?.theme?.primary}!important;
                         color: ${config && config?.theme?.light}!important;
                     }
-                    button.chakra-button {
+                    button.chakra-button:not(.edit-button):not(.delete-button) {
                         background: ${config && config?.theme?.primary}!important;
                     }
                     .css-3yzcwe,
