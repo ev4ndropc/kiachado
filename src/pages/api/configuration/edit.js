@@ -12,13 +12,15 @@ export default async function EditConfiguration(request, response) {
         return response.status(400).json({ ok: false });
 
     try {
-        const { logo, favicon, site_name, site_description, site_keys, social_networks, theme, copyright, pixel, custom_javascript, custom_css } = request.body;
+        const { logo, favicon, site_name, site_description, home_title, home_subtitle, site_keys, social_networks, theme, copyright, pixel, custom_javascript, custom_css } = request.body;
 
         var updateIfExist = {};
 
         if (logo) updateIfExist.logo = logo;
         if (favicon) updateIfExist.favicon = favicon;
         if (site_name) updateIfExist.site_name = site_name;
+        if (home_title) updateIfExist.home_title = home_title;
+        if (home_subtitle) updateIfExist.home_subtitle = home_subtitle;
         if (site_description) updateIfExist.site_description = site_description;
         if (site_keys) updateIfExist.site_keys = site_keys;
         if (social_networks) updateIfExist.social_networks = social_networks;

@@ -62,14 +62,13 @@ export default function Home({ products, config }) {
                 fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
                 fontFamily="'Poppins', sans-serif!important"
                 lineHeight={'110%'}>
-                Os melhores achados da internet <br />
+                {config && config?.home_title ? config.home_title : 'Os melhores achados da internet'} <br />
                 <Text as={'span'} color={config && config?.theme?.primary ? `${config.theme.primary}!important` : 'green!important'}>
                   você encontra aqui
                 </Text>
               </Heading>
               <Text color={'gray.500'}>
-                Nós encontramos e listamos os produtos mais inovadores, com o melhor preço e o melhor vendedor.
-                Tudo para que você não tenha dor de cabeça na hora de sua compra.
+                {config && config?.home_subtitle ? config.home_subtitle : 'Nós encontramos e listamos os produtos mais inovadores, com o melhor preço e o melhor vendedor.Tudo para que você não tenha dor de cabeça na hora de sua compra.'}
               </Text>
               <InputGroup className='search-product'>
                 <InputLeftElement mt={1}>

@@ -165,6 +165,8 @@ export default function Configuration({ config }) {
         const data = {
             site_name: siteName,
             site_description: siteDescription,
+            home_title: homeTitle,
+            home_subtitle: homeSubtitle,
             site_keys: siteKeysText,
             copyright: copyright,
             logo: compressedLogo,
