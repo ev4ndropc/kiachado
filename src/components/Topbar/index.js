@@ -1,25 +1,24 @@
-import { Container, Flex, IconButton, Img, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { Container, Flex, Img } from "@chakra-ui/react";
 
-import { BiSearch } from 'react-icons/bi'
-
-export default function Topbar () {
-    return(
-        <Flex 
-            w="100%" 
-            h={28} 
+export default function Topbar({ config }) {
+    console.log(config.logo)
+    return (
+        <Flex
+            w="100%"
+            h={28}
             minH={20}
-            alignItems="center" 
+            alignItems="center"
             justifyContent="center"
         >
             <Container
-                w="100%" 
+                w="100%"
                 maxW="1366px"
-                alignItems="center" 
+                alignItems="center"
                 // justifyContent="space-between"
                 justifyContent="center"
             >
                 <Flex className="logo" justifyContent="center">
-                    <Img w={52} h={12} src="/images/logo.png" />
+                    <Img w={16} h="auto" src={config && config?.logo ? `/images/${config.logo}` : '/images/logo.png'} />
                 </Flex>
             </Container>
         </Flex>

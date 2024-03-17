@@ -272,7 +272,7 @@ export default function Configuration({ config }) {
                 </style>
             </Head>
             <Flex w="100%" h="100%" justifyContent="center" alignItems="center" flexDir="column" p={4}>
-                <PanelTopbar />
+                <PanelTopbar config={config} />
                 <chakra.form
                     w="100%"
                     h="100%"
@@ -302,7 +302,15 @@ export default function Configuration({ config }) {
                         <Flex flexWrap="wrap">
                             {siteKeys.map((key, index) => (
                                 key &&
-                                <Tag mt={1} size="sm" ml={index > 0 ? 1 : 0} key={index} variant='outline' colorScheme='blue'>
+                                <Tag
+                                    key={index}
+                                    mt={1}
+                                    size="sm"
+                                    ml={index > 0 ? 1 : 0}
+                                    variant='outline'
+                                    color={`${config && config?.theme?.primary ? config.theme.primary : 'orange'}`}
+                                    boxShadow={`inset 0 0 0px 1px ${config && config?.theme?.primary ? config.theme.primary : 'orange'}`}
+                                >
                                     <TagLabel>{key}</TagLabel>
                                 </Tag>
                             ))}

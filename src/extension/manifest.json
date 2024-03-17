@@ -1,11 +1,12 @@
 {
     "manifest_version": 3,
-    "name": "Amazon Scraper",
+    "name": "Marketplace Product Import",
     "version": "1.0",
-    "description": "Uma extensão para extrair dados das páginas da Amazon.",
+    "description": "Uma extensão para extrair dados de produtos.",
     "permissions": [
         "activeTab",
-        "scripting"
+        "scripting",
+        "storage"
     ],
     "host_permissions": [
         "*://*.amazon.com/*",

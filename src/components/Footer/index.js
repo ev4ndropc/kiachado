@@ -17,12 +17,6 @@ import { ReactNode, useState } from 'react';
 import { FaInstagram, FaTiktok, FaYoutube } from 'react-icons/fa';
 import { BiMailSend } from 'react-icons/bi';
 
-const Logo = (props) => {
-    return (
-        <Img w={48} h={10} src="/images/logo.png" alt="Logo" />
-    );
-};
-
 const SocialButton = ({
     children,
     label,
@@ -37,12 +31,14 @@ const SocialButton = ({
             cursor={'pointer'}
             as={'a'}
             href={href}
+            target='_bank'
             display={'inline-flex'}
             alignItems={'center'}
             justifyContent={'center'}
-            transition={'background 0.3s ease'}
+            transition={'all 0.3s ease'}
             _hover={{
                 bg: useColorModeValue('blackAlpha.200', 'whiteAlpha.200'),
+                transform: 'scale(1.1)',
             }}>
             <VisuallyHidden>{label}</VisuallyHidden>
             {children}
@@ -58,7 +54,7 @@ const ListHeader = ({ children }) => {
     );
 };
 
-export default function Footer() {
+export default function Footer({ config }) {
     const toast = useToast()
 
     const [isLoading, setIsLoading] = useState(false)
@@ -114,21 +110,42 @@ export default function Footer() {
                     spacing={8}>
                     <Stack spacing={6} className="footer_col">
                         <Box>
-                            <Logo color={useColorModeValue('gray.700', 'white')} />
+                            <Img w={12} src={config && config?.logo ? `/images/${config.logo}` : '/images/logo.png'} />
                         </Box>
                         <Text fontSize={'sm'} className="copyright">
-                            © 2020-{new Date().getFullYear()} Ki Achado. Todos os direitos reservados
+                            {config && config?.copyright ? config.copyright : ''}
                         </Text>
-                        <Stack direction={'row'} spacing={6}>
-                            <SocialButton label={'Twitter'} href={'https://www.tiktok.com/@kiachado'} target="_bank">
-                                <FaTiktok />
-                            </SocialButton>
-                            <SocialButton label={'YouTube'} href={'https://www.youtube.com/channel/UC6TeKTAIWTx4AnQrXnVpJmQ'} target="_bank">
-                                <FaYoutube />
-                            </SocialButton>
-                            <SocialButton label={'Instagram'} href={'https://www.instagram.com/kiachado_com/'} target="_bank">
-                                <FaInstagram />
-                            </SocialButton>
+                        <Stack direction={'row'} spacing={2}>
+                            {config && config?.social_networks?.facebook &&
+                                <SocialButton label={'Facebook'} href={config?.social_networks?.facebook} target="_bank">
+                                    <Img src="/images/social_networks/facebook.png" w="20px" />
+                                </SocialButton>
+                            }
+                            {config && config?.social_networks?.instagram &&
+                                <SocialButton label={'Instagram'} href={config?.social_networks?.instagram} target="_bank">
+                                    <Img src="/images/social_networks/instagram.png" w="20px" />
+                                </SocialButton>
+                            }
+                            {config && config?.social_networks?.whatsapp &&
+                                <SocialButton label={'Whatsapp'} href={config?.social_networks?.whatsapp} target="_bank">
+                                    <Img src="/images/social_networks/whatsapp.png" w="18px" />
+                                </SocialButton>
+                            }
+                            {config && config?.social_networks?.youtube &&
+                                <SocialButton label={'Youtube'} href={config?.social_networks?.youtube} target="_bank">
+                                    <Img src="/images/social_networks/youtube.png" w="20px" />
+                                </SocialButton>
+                            }
+                            {config && config?.social_networks?.tiktok &&
+                                <SocialButton label={'Tiktok'} href={config?.social_networks?.tiktok} target="_bank">
+                                    <Img src="/images/social_networks/tiktok.png" w="20px" />
+                                </SocialButton>
+                            }
+                            {config && config?.social_networks?.kwai &&
+                                <SocialButton label={'Kwai'} href={config?.social_networks?.kwai} target="_bank">
+                                    <Img src="/images/social_networks/kwai.png" w="18px" />
+                                </SocialButton>
+                            }
                         </Stack>
                     </Stack>
                     <Stack align={'center'} className="footer_col">

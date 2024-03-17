@@ -11,8 +11,9 @@ import Main from '../../../components/Main'
 import Footer from '../../../components/Footer'
 
 import Logo from '../../../assets/logo.png'
+import config from '../../../config'
 
-export default function Login() {
+export default function Login({ config }) {
     const toast = useToast()
     const router = useRouter()
 
@@ -65,11 +66,11 @@ export default function Login() {
     }
     return (
         <Main justifyContent="center" alignItems="center">
-            <Head pageTitle="Login" />
+            <Head pageTitle="Login" config={config} />
 
             <Flex w="100%" maxW="420px" flexDir="column" p={4}>
                 <Flex justifyContent="center" alignItems="center">
-                    <Img maxW="180px" src="/images/logo.png" alt="Logo" />
+                    <Img w={16} src={config && config?.logo ? `/images/${config.logo}` : "/images/logo.png"} alt="Logo" />
                 </Flex>
                 <Flex w="100%" borderRadius="md" boxShadow="md" p={8} bg="white" mt={4}>
                     <chakra.form w="100%" onSubmit={handleLogin}>
@@ -102,4 +103,26 @@ export default function Login() {
             </Flex>
         </Main>
     )
+}
+
+export async function getServerSideProps({ req, res }) {
+
+    try {
+        const getConfig = await fetch(`${config.BASE_URL}/api/configuration/get`)
+        const configJson = await getConfig.json()
+        return {
+            props: {
+                config: configJson.data
+            }
+        }
+    } catch (error) {
+        console.log(error)
+        return {
+            redirect: {
+                permanent: false,
+                destination: "/"
+            }
+        }
+    }
+
 }

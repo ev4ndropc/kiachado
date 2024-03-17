@@ -21,12 +21,6 @@ a {
   box-sizing: border-box;
 }
 
-input:focus-visible,
-input[data-focus-visible] {
-  border-color: var(--chakra-colors-orange-500) !important;
-  box-shadow: 0 0 0 1px var(--chakra-colors-orange-500) !important;
-}
-
 .chakra-modal__content-container {
   padding: 1rem;
 }

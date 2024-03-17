@@ -20,16 +20,27 @@ export default function Header({ pageTitle, children, config }) {
             <style>
                 {`
                     .css-krpuct,
-                    .css-rq199c {
+                    .css-rq199c,
+                    .css-1v5z1kv{
                         background:linear-gradient(62deg, ${config && config?.theme?.primary} 0%, ${config && config?.theme?.secondary} 50%, ${config && config?.theme?.secondary} 100%)!important;
                     }
+                    .chakra-form__label,
+                    input, 
+                    select, 
+                    textarea, 
+                    .chakra-text {
+                        color: ${config && config?.theme?.dark}!important;
+                    }
                     .panel-topbar {
-                        background: ${config && config?.theme?.light}!important;color: ${config && config?.theme?.dark}!important;}
+                        background: ${config && config?.theme?.light}!important;
+                        color: ${config && config?.theme?.dark}!important;}
                     }
                     #chakra-modal-:r3: {
                         background: ${config && config?.theme?.primary}!important;}
                     }
-                    .panel-topbar li:not(.active) {
+                    .panel-topbar li:not(.active),
+                    .chakra-heading,
+                    p.chakra-text {
                         color: ${config && config?.theme?.dark} !important;
                     }
                     .panel-topbar li.active p {
@@ -47,20 +58,35 @@ export default function Header({ pageTitle, children, config }) {
                     .css-1mclrct {
                         background: ${config && config?.theme?.primary}!important;
                     }
-                    .css-cfi26e {
+                    a.chakra-link {
+                        background: ${config && config?.theme?.primary}!important;
+                        color: ${config && config?.theme?.light}!important;
+                    }
+                    button.chakra-button {
+                        background: ${config && config?.theme?.primary}!important;
+                    }
+                    .css-3yzcwe,
+                    input:focus-visible, 
+                    input[data-focus-visible] {
+                        border-color: ${config && config?.theme?.primary}!important;
+                        box-shadow: 0 0 0 1px ${config && config?.theme?.primary} !important;
+                    }
+                    button.chakra-button svg {
+                        fill: ${config && config?.theme?.light}!important;
+                    }
+                    .copyright,
+                    .footer_col .chakra-text {
+                        color: ${config && config?.theme?.light}!important;   
+                    }
+                    .css-cfi26e,
+                    .css-7i64dd {
                         background: ${config && config?.theme?.light}!important;
                     }
                     .mobile-menu {
                         background: ${config && config?.theme?.light}!important;
                         color: ${config && config?.theme?.dark}!important;
                     }
-                    .chakra-form__label,
-                    input, 
-                    select, 
-                    textarea, 
-                    .chakra-text {
-                        color: ${config && config?.theme?.dark}!important;
-                    }
+
                     `}
             </style>
             <style>

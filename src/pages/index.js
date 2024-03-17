@@ -110,7 +110,7 @@ export default function Home({ products, config }) {
         </Flex>
       </Flex>
 
-      <Footer />
+      <Footer config={config} />
 
     </Main>
   )
@@ -132,7 +132,9 @@ export async function getServerSideProps({ req, res }) {
     }
   } catch (error) {
     return {
-      props: {}
+      props: {
+        products: []
+      }
     }
   }
 
