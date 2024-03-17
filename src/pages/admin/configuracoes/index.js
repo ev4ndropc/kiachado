@@ -240,7 +240,7 @@ export default function Configuration({ config }) {
         .chakra-text {
             color: ${darkColor}!important;
         }
-        .chakra-button {
+        button.chakra-button:not(.edit-button):not(.delete-button){
             background: ${primaryColor}!important;
             color: ${lightColor}!important;
         }
