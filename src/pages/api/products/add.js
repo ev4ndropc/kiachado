@@ -40,7 +40,7 @@ export default async function addProducts(request, response) {
                 julho: 6, agosto: 7, setembro: 8, outubro: 9, novembro: 10, dezembro: 11
             };
 
-            const partesData = dataString.split(' ');
+            const partesData = date.split(' ');
             const dia = parseInt(partesData[0], 10);
             const mes = meses[partesData[2].toLowerCase()];
             const ano = parseInt(partesData[4], 10);
