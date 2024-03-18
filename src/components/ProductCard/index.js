@@ -82,10 +82,10 @@ export default function ProductCard({ product, config }) {
                     </Flex>
                     <Stack pt={10} align={'center'}>
                         {product.platform == 'shopee' &&
-                            <Img w="72" src="/images/shopee-logo.png" alt="Shopee logo" />
+                            <Img w="72px" src="/images/shopee-logo.png" alt="Shopee logo" />
                         }
                         {product.platform == 'amazon' &&
-                            <Img w="72" src="/images/amazon-logo.png" alt="Amazon logo" />
+                            <Img w="72px" src="/images/amazon-logo.png" alt="Amazon logo" />
                         }
                         <Heading fontSize={'lg'} fontFamily={'body'} textTransform="capitalize" fontWeight={500} noOfLines={2}>
                             {product.name}
@@ -130,7 +130,7 @@ export default function ProductCard({ product, config }) {
 
                     }
                     <Stack mt={4}>
-                        <Button className='btn' as={Link} href={product.affiliateLink ? product.affiliateLink : `/product/${product.id}`} leftIcon={<BsCart2 />} target="_blank" rel="noreferrer" colorScheme="orange">Comprar agora</Button>
+                        <Button className='btn' as={Link} href={product.affiliateLink ? product.affiliateLink : `/${product.id}`} leftIcon={<BsCart2 />} target="_blank" rel="noreferrer" colorScheme="orange">Comprar agora</Button>
                     </Stack>
                 </Box>
             </Center>

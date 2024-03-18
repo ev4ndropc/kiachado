@@ -8,6 +8,7 @@ export default async function findProducts(request, response) {
             .from('products')
             .leftJoin('reviews', 'products.id', 'reviews.product_id')
             .groupBy('products.id')
+            .orderBy('products.id', 'desc')
 
         return response.status(200).json({ ok: true, data: products })
     } catch (error) {

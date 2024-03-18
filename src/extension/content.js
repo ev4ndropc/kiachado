@@ -30,6 +30,34 @@ window.addEventListener('load', (event) => {
                 window.requestAnimationFrame(step);
             }
 
+            function setIsLoading() {
+                document.querySelector('body').setAttribute('style', 'overflow: hidden;');
+                const pageOverlay = document.createElement('div');
+                pageOverlay.id = 'kiachado-overlay';
+                pageOverlay.style = 'position: fixed; top: 0; left: 0; display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; backdrop-filter: blur(10px); background: rgba(0, 0, 0, 0.5); z-index: 9998;';
+
+                var overFlowHtml = document.createElement('div');
+                overFlowHtml.classList = 'w-full bg-red-500 h-full flex justify-center items-center';
+                overFlowHtml.style = 'width: 100%; max-width: 400px; background: white; padding: 12px; border-radius: 6px; display: flex; justify-content: center; align-items: center; min-height: 100px;';
+                overFlowHtml.innerHTML = `
+                <div class="flex flex-col justify-center items-center">
+
+                <video controls>
+                    <source src="${DEFAULT_URL}/import-animation.webm" type="video/webm">
+                    Seu navegador não suporta o formato de vídeo WebM.
+                </video>
+                <span class="mt-2>Importando produto...</span>
+                </div>`;
+                pageOverlay.appendChild(overFlowHtml);
+
+                document.querySelector('body').appendChild(pageOverlay);
+            }
+
+            function removeIsLoading() {
+                document.querySelector('body').removeAttribute('style');
+                document.querySelector('#kiachado-overlay').remove();
+            }
+            setIsLoading()
 
             if (window.location.hostname.includes("amazon.")) {
                 var hasProductPage = document.querySelector('div[data-asin]');
@@ -44,7 +72,6 @@ window.addEventListener('load', (event) => {
                     const fetchPage = await fetch(window.location.href).then(response => response.text())
 
                     const pageDocument = new DOMParser().parseFromString(fetchPage, "text/html")
-                    console.log(pageDocument)
 
                     document.querySelector("#kiachado-import").addEventListener("click", async function () {
                         let reviews

@@ -7,13 +7,14 @@ export default async function listProducts(request, response) {
         return response.status(400).json({ ok: false })
 
     try {
-        const { limit = 20, offset = 0 } = request.query
+        const { limit = 1000, offset = 0 } = request.query
 
         const products = await database
             .select('products.*', database.raw('json_agg(reviews) AS reviews'))
             .from('products')
             .leftJoin('reviews', 'products.id', 'reviews.product_id')
             .groupBy('products.id')
+            .orderBy('products.id', 'desc')
             .limit(limit)
             .offset(offset);
 
