@@ -41,12 +41,8 @@ window.addEventListener('load', (event) => {
                 overFlowHtml.style = 'width: 100%; max-width: 400px; background: white; padding: 12px; border-radius: 6px; display: flex; justify-content: center; align-items: center; min-height: 100px;';
                 overFlowHtml.innerHTML = `
                 <div class="flex flex-col justify-center items-center">
-
-                <video controls>
-                    <source src="${DEFAULT_URL}/import-animation.webm" type="video/webm">
-                    Seu navegador não suporta o formato de vídeo WebM.
-                </video>
-                <span class="mt-2>Importando produto...</span>
+                    <img src="${DEFAULT_URL}/import-animation.gif"/>
+                    <span class="mt-2>Importando produto...</span>
                 </div>`;
                 pageOverlay.appendChild(overFlowHtml);
 
