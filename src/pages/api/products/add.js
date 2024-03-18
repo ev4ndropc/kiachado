@@ -41,7 +41,7 @@ export default async function addProducts(request, response) {
                 review_text: review.review_text,
                 review_profile_avatar: review.review_profile_avatar,
                 review_profile_name: review.review_profile_name,
-                created_at: moment().format()
+                created_at: moment(review.review_date).format()
             }))
             await database.insert(data).into('reviews').returning('*')
         }

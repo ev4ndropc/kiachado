@@ -182,7 +182,7 @@ export default function Users({ config }) {
                 onClose={onCloseDeleteAlert}
                 isCentered
             >
-                <AlertDialogOverlay>
+                <AlertDialogOverlay backdropFilter="blur(10px)">
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
                             Deletar assinate

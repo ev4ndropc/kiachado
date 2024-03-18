@@ -1,0 +1,82 @@
+body {
+    background: linear-gradient(62deg, #31bf6e 0%, #590ca6 50%, #590ca6 100%) !important;
+    width: 384px;
+    height: 225px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+.logged-in {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+}
+
+.logout {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+}
+
+.logout img {
+    filter: brightness(0) invert(1);
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.logout img:hover {
+    transform: scale(1.2);
+}
+
+/* Estilizando o checkbox */
+.custom-checkbox {
+    display: none;
+    /* Escondendo o checkbox padrão */
+}
+
+/* Estilizando a aparência do checkbox */
+.custom-checkbox+label {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    background-color: #ccc;
+    /* Cor de fundo padrão */
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Alterando a cor de fundo quando o checkbox está marcado */
+.custom-checkbox:checked+label {
+    background-color: #31bf6e;
+    /* Nova cor de fundo quando marcado */
+}
+
+/* Estilizando o marcador de seleção */
+.custom-checkbox:checked+label::after {
+    content: '\2713';
+    /* Código Unicode para o símbolo de check */
+    font-size: 14px;
+    color: white;
+    /* Cor do marcador quando marcado */
+    text-align: center;
+    line-height: 14px;
+}
+
+label {
+    color: white !important;
+}
+
+button[type="submit"] {
+    background-color: #31bf6e;
+    font-size: 14px;
+    font-weight: bold;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

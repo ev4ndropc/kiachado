@@ -448,7 +448,7 @@ export default function Products({ config }) {
 
                                                     <HStack mt={2} alignItems="center">
                                                         <Text fontWeight="bold">Plataforma:</Text>
-                                                        <Img mt={"3!important"} maxW="64px" src={product.platform === 'Shopee' ? "/images/shopee-logo.png" : "/images/amazon-logo.png"} alt={`${product.platform} logo`} />
+                                                        <Img mt={"3!important"} maxW="64px" src={product.platform === 'shopee' ? "/images/shopee-logo.png" : "/images/amazon-logo.png"} alt={`${product.platform} logo`} />
                                                     </HStack>
 
                                                     <Flex mt={2}>
@@ -512,7 +512,7 @@ export default function Products({ config }) {
                 onClose={onCloseDeleteAlert}
                 isCentered
             >
-                <AlertDialogOverlay>
+                <AlertDialogOverlay backdropFilter="blur(10px)">
                     <AlertDialogContent>
                         <AlertDialogHeader fontSize='lg' fontWeight='bold'>
                             Deletar Produto

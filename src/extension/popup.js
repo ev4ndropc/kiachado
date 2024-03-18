@@ -46,8 +46,6 @@ document.addEventListener("DOMContentLoaded", async function () {
                         headers: {
                             'Content-Type': 'application/json',
                             'User-Agent': 'insomnia/2023.5.8',
-                            sign: '34f59dcc-b729-4637-bc80-c18a194755d4',
-                            merchant: 'L2Elyx'
                         },
                         body: JSON.stringify({
                             email,
@@ -58,8 +56,20 @@ document.addEventListener("DOMContentLoaded", async function () {
                     const sigin = await fetch(`https://www.kiachado.com/api/login`, options)
                     const json = await sigin.json();
 
+
                     if (json.ok) {
+                        document.querySelector(".need-login").classList.add("hidden");
+                        document.querySelector(".logged-in").classList.remove("hidden");
                         chrome.storage.local.set({ token: json.token }, () => null);
+                        Toastify({
+                            text: "Login efetuado com sucesso!",
+                            duration: 2000
+                        }).showToast();
+                    } else {
+                        Toastify({
+                            text: json.message,
+                            duration: 2000
+                        }).showToast();
                     }
 
                 } catch (error) {
@@ -70,6 +80,11 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
     })
 
+    document.querySelector('.logout img').addEventListener('click', () => {
+        chrome.storage.local.remove('token', () => null);
+        document.querySelector(".need-login").classList.remove("hidden");
+        document.querySelector(".logged-in").classList.add("hidden");
+    })
 
 
 
