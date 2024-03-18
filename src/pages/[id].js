@@ -40,7 +40,7 @@ export async function getServerSideProps({ req, res, params }) {
                 return {
                     redirect: {
                         permanent: false,
-                        destination: "/"
+                        destination: json?.data?.link
                     }
                 }
             }

@@ -8,7 +8,7 @@ export default async function findProducts(request, response) {
             return response.status(400).json({ ok: false, message: 'ID de produto não encontrado!' })
 
         await database.increment('clicks').where({ id }).table('products')
-        const product = await database.select(["id", "affiliateLink"]).where({ id }).table('products').first()
+        const product = await database.select(["id", "affiliateLink", "link"]).where({ id }).table('products').first()
 
         return response.status(200).json({ ok: true, data: product })
 
