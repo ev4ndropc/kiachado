@@ -83,10 +83,10 @@ export default function Reviews({ reviews }) {
             {reviewsData.map((review, index) => (
                 <>
                     <Flex key={index} w="100%" flexDir="column">
-                        <Flex flexDir="row" justifyContent="space-between">
+                        <Flex flexDir="row" justifyContent="space-between" mb={1}>
                             <Flex flexDir="row">
                                 <Avatar size="sm" src={review.review_profile_avatar} alt="Shopee logo" />
-                                <Text fontSize={14} ml={2}>{review.review_profile_name}</Text>
+                                <Text display="flex" alignItems="center" fontSize={14} ml={2}>{review.review_profile_name}</Text>
                             </Flex>
                             {router.pathname === '/admin/produtos' &&
                                 <Button
@@ -109,7 +109,7 @@ export default function Reviews({ reviews }) {
                             readonly
                             quiet
                         />
-                        <Text mt={-1} mb={2} fontSize={12}>Avaliado em {moment(review.created_at).format('DD [de] MMMM [de] YYYY')}</Text>
+                        <Text mt={1} mb={2} fontSize={12}>Avaliado em {moment(review.created_at).format('DD [de] MMMM [de] YYYY')}</Text>
                         <Flex fontSize={14}>{parse(review.review_text)}</Flex>
                     </Flex>
                     <Divider my={4} />
