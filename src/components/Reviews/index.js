@@ -25,7 +25,7 @@ export default function Reviews({ reviews }) {
                         readonly
                         quiet
                     />
-                    <Text mt={-1} mb={2} fontSize={12}>Avaliado em {moment(review.review_date).format('LLL')}</Text>
+                    <Text mt={-1} mb={2} fontSize={12}>Avaliado em {moment(review.created_at).format('LLL')}</Text>
                     <Text fontSize={14}>{review.review_text}</Text>
                 </Flex>
             ))}
