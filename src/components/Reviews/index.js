@@ -109,7 +109,7 @@ export default function Reviews({ reviews }) {
                             readonly
                             quiet
                         />
-                        <Text mt={1} mb={2} fontSize={12}>Avaliado em {moment(review.created_at).format('DD [de] MMMM [de] YYYY')}</Text>
+                        <Text mt={0} mb={2} fontSize={12}>Avaliado em {moment(review.created_at).format('DD [de] MMMM [de] YYYY')}</Text>
                         <Flex fontSize={14}>{parse(review.review_text)}</Flex>
                     </Flex>
                     <Divider my={4} />
