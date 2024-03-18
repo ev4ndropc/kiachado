@@ -73,7 +73,7 @@ export default function ProductCard({ product, config }) {
                             },
                         }}>
                         <Image
-                            rounded={'lg'}
+                            borderRadius="lg"
                             height={161}
                             width={197}
                             objectFit={'contain'}

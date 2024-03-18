@@ -149,7 +149,7 @@ export default function Products({ config }) {
         if (productPlatform == 'Shopee') {
             data = {
                 name: productName,
-                image: 'https://cf.shopee.com.br/file/' + productImage,
+                image: productImage,
                 rating: parseFloat(productRating).toFixed(1),
                 platform: productPlatform,
                 link: productLink
@@ -363,7 +363,7 @@ export default function Products({ config }) {
                                         return (
                                             <Box key={index} borderWidth="1px" borderRadius="lg" bg="white" overflow="hidden" boxShadow="md">
                                                 <Center mt={6}>
-                                                    <Img w="150px" h="150px" objectFit="contain" src={product.image} alt={product.name} />
+                                                    <Img w="150px" h="150px" borderRadius="lg" objectFit="contain" src={product.image} alt={product.name} />
                                                 </Center>
                                                 <Box p="6">
 
@@ -557,7 +557,7 @@ export default function Products({ config }) {
                                     {productImage &&
                                         <Flex flexDir="column">
                                             <FormLabel>Imagem</FormLabel>
-                                            <Img w="150px" h="150px" objectFit="contain" src={`https://cf.shopee.com.br/file/${productImage}`} alt="" />
+                                            <Img w="150px" h="150px" objectFit="contain" src={`${productImage}`} alt="" />
                                         </Flex>
                                     }
                                     {productName &&
@@ -665,7 +665,7 @@ export default function Products({ config }) {
                                 <Flex w="100%" justifyContent="center" alignItems="cente" flexDir="column">
 
                                     <Flex>
-                                        <Img w="150px" h="150px" objectFit="contain" src={`https://cf.shopee.com.br/file/${productImage}`} alt="" />
+                                        <Img w="150px" h="150px" objectFit="contain" borderRadius="lg" src={`${productImage}`} alt="" />
                                     </Flex>
 
 
@@ -719,7 +719,7 @@ export default function Products({ config }) {
                                 <Flex w="100%" justifyContent="center" alignItems="cente" flexDir="column">
 
                                     <Flex>
-                                        <Img maxW="220px" src={productImage} alt={productName} />
+                                        <Img w="150px" h="150px" objectFit="contain" borderRadius="lg" src={productImage} alt={productName} />
                                     </Flex>
 
 
