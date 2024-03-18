@@ -35,9 +35,16 @@ export default function Home({ products, config }) {
 
   useEffect(() => {
     if (products) {
-      const newList = [...products]
-      const newListFilter = newList.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()))
-      setSearchList(newListFilter)
+
+      if (!isNaN(parseFloat(searchTerm)) && isFinite(searchTerm)) {
+        const newList = [...products]
+        const newListFilter = newList.filter(product => product.id == searchTerm)
+        setSearchList(newListFilter)
+      } else {
+        const newList = [...products]
+        const newListFilter = newList.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()))
+        setSearchList(newListFilter)
+      }
     }
 
 
