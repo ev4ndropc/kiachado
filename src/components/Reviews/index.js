@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useRouter } from "next/router";
 import {
     Avatar,
@@ -11,14 +12,15 @@ import {
 } from "@chakra-ui/react";
 import moment from "moment";
 import 'moment/locale/pt-br'
-import { AiFillStar } from "react-icons/ai";
+import { getCookie } from "cookies-next";
 import Rating from "react-rating";
 import parse from 'html-react-parser';
+
+import { AiFillStar } from "react-icons/ai";
 import { AiOutlineDelete } from "react-icons/ai";
-import { useState } from "react";
 
 export default function Reviews({ reviews }) {
-    const token = localStorage.getItem('token')
+    const token = getCookie("token")
     const router = useRouter()
 
     const [isLoading, setIsLoading] = useState(false)
