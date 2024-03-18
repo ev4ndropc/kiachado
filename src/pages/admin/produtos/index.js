@@ -447,7 +447,7 @@ export default function Products({ config }) {
 
                                                     <HStack mt={2} alignItems="center">
                                                         <Text fontWeight="bold">Plataforma:</Text>
-                                                        <Img mt={"3!important"} maxW="64px" src={product.platform === 'shopee' ? "/images/shopee-logo.png" : "/images/amazon-logo.png"} alt={`${product.platform} logo`} />
+                                                        <Img mt={product.platform === 'amazon' ? "3!important" : 0} maxW="64px" src={product.platform === 'shopee' ? "/images/shopee-logo.png" : "/images/amazon-logo.png"} alt={`${product.platform} logo`} />
                                                     </HStack>
 
                                                     <Flex mt={2}>
