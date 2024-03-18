@@ -19,8 +19,6 @@ export default async function EditConfiguration(request, response) {
         if (logo) updateIfExist.logo = logo;
         if (favicon) updateIfExist.favicon = favicon;
         if (site_name) updateIfExist.site_name = site_name;
-        if (show_ratings) updateIfExist.show_ratings = Boolean(show_ratings);
-        if (show_reviews) updateIfExist.show_reviews = Boolean(show_reviews);
         if (home_title) updateIfExist.home_title = home_title;
         if (home_subtitle) updateIfExist.home_subtitle = home_subtitle;
         if (site_description) updateIfExist.site_description = site_description;
@@ -31,6 +29,9 @@ export default async function EditConfiguration(request, response) {
         if (pixel) updateIfExist.pixel = pixel;
         if (custom_javascript) updateIfExist.custom_javascript = custom_javascript;
         if (custom_css) updateIfExist.custom_css = custom_css;
+
+        updateIfExist.show_ratings = Boolean(show_ratings);
+        updateIfExist.show_reviews = Boolean(show_reviews);
 
         if (Object.keys(updateIfExist).length == 0) return response.status(200).json({ ok: true, message: 'Nenhum campo foi alterado!' });
 

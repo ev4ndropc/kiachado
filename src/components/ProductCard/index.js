@@ -90,7 +90,7 @@ export default function ProductCard({ product, config }) {
                         <Heading fontSize={'lg'} fontFamily={'body'} textTransform="capitalize" fontWeight={500} noOfLines={2}>
                             {product.name}
                         </Heading>
-                        {config && config.show_reviews &&
+                        {config && config.show_ratings &&
                             <Flex flexDir="row" alignItems="center">
                                 <Rating
                                     initialRating={Number(parseFloat(product.rating).toFixed(1))}

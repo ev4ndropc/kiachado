@@ -45,7 +45,8 @@ import {
     Tag,
     TagLabel,
     FormHelperText,
-    Select
+    Select,
+    Switch
 } from "@chakra-ui/react"
 import { getCookie } from "cookies-next"
 import CodeMirror from '@uiw/react-codemirror';
@@ -89,8 +90,8 @@ export default function Configuration({ config }) {
     const [customCss, setCustomCss] = useState(config && config?.custom_css ? config.custom_css : "")
     const [copyright, setCopyright] = useState(config && config?.copyright ? config.copyright : "")
     const [pixel, setPixel] = useState(config && config?.pixel ? config.pixel : "")
-    const [showRatings, setShowRatings] = useState(config && config?.show_ratings ? config.show_ratings : "")
-    const [showReviews, setShowReviews] = useState(config && config?.show_reviews ? config.show_reviews : "")
+    const [showRatings, setShowRatings] = useState(config && config?.show_ratings ? config.show_ratings : false)
+    const [showReviews, setShowReviews] = useState(config && config?.show_reviews ? config.show_reviews : false)
     const [socialNetworks, setSocialNetworks] = useState(config && config?.social_networks ? config.social_networks : {})
     const [Facebook, setFacebook] = useState(config && config?.social_networks ? config?.social_networks?.facebook : "")
     const [Instagram, setInstagram] = useState(config && config?.social_networks ? config?.social_networks?.instagram : "")
@@ -171,8 +172,8 @@ export default function Configuration({ config }) {
             home_title: homeTitle,
             home_subtitle: homeSubTitle,
             site_keys: siteKeysText,
-            show_ratings: showRatings,
-            show_reviews: showReviews,
+            show_ratings: Boolean(showRatings),
+            show_reviews: Boolean(showReviews),
             copyright: copyright,
             logo: compressedLogo,
             favicon: compressedFavicon,
@@ -352,19 +353,14 @@ export default function Configuration({ config }) {
                     </FormControl>
 
                     <FormControl mt={4}>
+                        {console.log(showRatings)}
                         <FormLabel>Mostrar nota</FormLabel>
-                        <Select disabled={isLoading} onChange={(e) => setShowRatings(e.target.value)} value={showRatings} placeholder="Mostrar notas">
-                            <option value="true">Sim</option>
-                            <option value="false">Não</option>
-                        </Select>
+                        <Switch onChange={(e) => setShowRatings(e.target.checked)} isChecked={showRatings} value={showRatings} />
                     </FormControl>
 
                     <FormControl mt={4}>
                         <FormLabel>Mostrar avaliações</FormLabel>
-                        <Select disabled={isLoading} onChange={(e) => setShowReviews(e.target.value)} value={showReviews} placeholder="Mostrar avaliações">
-                            <option value="true">Sim</option>
-                            <option value="false">Não</option>
-                        </Select>
+                        <Switch onChange={(e) => setShowReviews(e.target.checked)} isChecked={showReviews} value={showReviews} />
                     </FormControl>
 
                     <FormControl mt={4}>
