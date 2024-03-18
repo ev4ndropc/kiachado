@@ -353,7 +353,7 @@ export default function Configuration({ config }) {
 
                     <FormControl mt={4}>
                         <FormLabel>Mostrar nota</FormLabel>
-                        <Select disabled={isLoading} onChange={(e) => setShowRatings(e.target.value)} value={showRatings} placeholder="Mostrar avaliações">
+                        <Select disabled={isLoading} onChange={(e) => setShowRatings(e.target.value)} value={showRatings} placeholder="Mostrar notas">
                             <option value="true">Sim</option>
                             <option value="false">Não</option>
                         </Select>
@@ -361,7 +361,7 @@ export default function Configuration({ config }) {
 
                     <FormControl mt={4}>
                         <FormLabel>Mostrar avaliações</FormLabel>
-                        <Select disabled={isLoading} onChange={(e) => setShowReviews(e.target.value)} value={showReviews} placeholder="Mostrar categorias">
+                        <Select disabled={isLoading} onChange={(e) => setShowReviews(e.target.value)} value={showReviews} placeholder="Mostrar avaliações">
                             <option value="true">Sim</option>
                             <option value="false">Não</option>
                         </Select>

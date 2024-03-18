@@ -82,10 +82,10 @@ export default function ProductCard({ product, config }) {
                     </Flex>
                     <Stack pt={10} align={'center'}>
                         {product.platform == 'shopee' &&
-                            <Img w="100px" src="/images/shopee-logo.png" alt="Shopee logo" />
+                            <Img w="72" src="/images/shopee-logo.png" alt="Shopee logo" />
                         }
                         {product.platform == 'amazon' &&
-                            <Img w="100px" src="/images/amazon-logo.png" alt="Amazon logo" />
+                            <Img w="72" src="/images/amazon-logo.png" alt="Amazon logo" />
                         }
                         <Heading fontSize={'lg'} fontFamily={'body'} textTransform="capitalize" fontWeight={500} noOfLines={2}>
                             {product.name}
