@@ -14,7 +14,7 @@ import 'moment/locale/pt-br'
 import { AiFillStar } from "react-icons/ai";
 import Rating from "react-rating";
 import parse from 'html-react-parser';
-import { BsFillTrash2Fill } from "react-icons/bs";
+import { AiOutlineDelete } from "react-icons/ai";
 import { useState } from "react";
 
 export default function Reviews({ reviews }) {
@@ -90,7 +90,7 @@ export default function Reviews({ reviews }) {
                             </Flex>
                             {router.pathname === '/admin/produtos' &&
                                 <Button
-                                    leftIcon={<Icon as={BsFillTrash2Fill} />}
+                                    leftIcon={<Icon as={AiOutlineDelete} />}
                                     onClick={(e) => handleDeleteReview(review)}
                                     size="sm"
                                     colorScheme="red"
