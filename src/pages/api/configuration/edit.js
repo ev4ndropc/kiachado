@@ -19,8 +19,8 @@ export default async function EditConfiguration(request, response) {
         if (logo) updateIfExist.logo = logo;
         if (favicon) updateIfExist.favicon = favicon;
         if (site_name) updateIfExist.site_name = site_name;
-        if (show_ratings) updateIfExist.show_ratings = show_ratings;
-        if (show_reviews) updateIfExist.show_reviews = show_reviews;
+        if (show_ratings) updateIfExist.show_ratings = Boolean(show_ratings);
+        if (show_reviews) updateIfExist.show_reviews = Boolean(show_reviews);
         if (home_title) updateIfExist.home_title = home_title;
         if (home_subtitle) updateIfExist.home_subtitle = home_subtitle;
         if (site_description) updateIfExist.site_description = site_description;
