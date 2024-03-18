@@ -34,15 +34,15 @@ window.addEventListener('load', (event) => {
                 document.querySelector('body').setAttribute('style', 'overflow: hidden;');
                 const pageOverlay = document.createElement('div');
                 pageOverlay.id = 'kiachado-overlay';
-                pageOverlay.style = 'position: fixed; top: 0; left: 0; display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; backdrop-filter: blur(10px); background: rgba(0, 0, 0, 0.5); z-index: 9998;';
+                pageOverlay.style = 'position: fixed; top: 0; left: 0; transition: all .8s ease; display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; backdrop-filter: blur(10px); background: rgba(0, 0, 0, 0.5); z-index: 99999;';
 
                 var overFlowHtml = document.createElement('div');
                 overFlowHtml.classList = 'w-full bg-red-500 h-full flex justify-center items-center';
                 overFlowHtml.style = 'width: 100%; max-width: 400px; background: white; padding: 12px; border-radius: 6px; display: flex; justify-content: center; align-items: center; min-height: 100px;';
                 overFlowHtml.innerHTML = `
-                <div class="flex flex-col justify-center items-center">
-                    <img src="${DEFAULT_URL}/import-animation.gif"/>
-                    <span class="mt-2>Importando produto...</span>
+                <div style="display: flex; justify-content: center; align-items: center; flex-direction: column;">
+                    <img src="${DEFAULT_URL}/images/import-animation.gif"/>
+                    <span id="import_message" style="margin-top: -12px;font-weight: 500; font-size: 16px;">Importando produto...</span>
                 </div>`;
                 pageOverlay.appendChild(overFlowHtml);
 
@@ -51,9 +51,14 @@ window.addEventListener('load', (event) => {
 
             function removeIsLoading() {
                 document.querySelector('body').removeAttribute('style');
-                document.querySelector('#kiachado-overlay').remove();
+                document.querySelector('#kiachado-overlay #import_message').innerText = 'Importado com sucesso!';
+                setTimeout(() => {
+                    document.querySelector('#kiachado-overlay').setAttribute('style', 'position: fixed; top: 0; left: 0; transition: all .8s ease; display: flex; justify-content: center; align-items: center; width: 100%; height: 100%; backdrop-filter: blur(10px); background: rgba(0, 0, 0, 0.5); z-index: 99999; opacity: 0;');
+                    setTimeout(() => {
+                        document.querySelector('#kiachado-overlay').remove();
+                    }, 1000)
+                }, 2000)
             }
-            setIsLoading()
 
             if (window.location.hostname.includes("amazon.")) {
                 var hasProductPage = document.querySelector('div[data-asin]');
@@ -70,6 +75,8 @@ window.addEventListener('load', (event) => {
                     const pageDocument = new DOMParser().parseFromString(fetchPage, "text/html")
 
                     document.querySelector("#kiachado-import").addEventListener("click", async function () {
+                        setIsLoading()
+
                         let reviews
                         const product_name = pageDocument.querySelector('#productTitle').innerText;
                         const product_image = pageDocument.querySelector('#imgTagWrapperId img').src;
@@ -127,7 +134,10 @@ window.addEventListener('load', (event) => {
 
                             const saveJson = await saveProduct.json()
                             if (saveJson.ok) {
-                                window.alert('Produtos importados com sucesso!')
+                                removeIsLoading()
+                            } else {
+                                removeIsLoading()
+                                alert(saveJson.message)
                             }
                         }
 
@@ -148,6 +158,7 @@ window.addEventListener('load', (event) => {
                         document.querySelector('body').appendChild(image);
 
                         document.querySelector("#kiachado-import").addEventListener("click", function () {
+                            setIsLoading()
                             let reviews
                             const product_name = document.querySelector('.WBVL_7 span').innerText;
                             const product_image = document.querySelector('.IMAW1w').src;
@@ -204,7 +215,10 @@ window.addEventListener('load', (event) => {
 
                                     const saveJson = await saveProduct.json()
                                     if (saveJson.ok) {
-                                        window.alert('Produtos importados com sucesso!')
+                                        removeIsLoading()
+                                    } else {
+                                        window.alert(saveJson.message)
+                                        removeIsLoading()
                                     }
                                 }, 5000);
                             }
