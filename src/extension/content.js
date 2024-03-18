@@ -105,8 +105,6 @@ window.addEventListener('load', (event) => {
                 interval = setInterval(() => {
                     var hasProductPage = document.querySelector('.product-briefing');
 
-                    console.log(hasProductPage)
-
                     if (hasProductPage && token) {
                         clearInterval(interval)
                         var image = document.createElement('img');

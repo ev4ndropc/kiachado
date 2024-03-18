@@ -14,6 +14,8 @@ exports.up = function (knex) {
         table.text('home_subtitle').nullable();
         table.json('social_networks').nullable();
         table.json('theme').nullable()
+        table.boolean('show_ratings').defaultTo(true);
+        table.boolean('show_reviews').defaultTo(true);
         table.text('copyright').nullable();
         table.text('pixel').nullable();
         table.text('custom_javascript').nullable();

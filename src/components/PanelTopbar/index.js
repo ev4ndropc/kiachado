@@ -134,6 +134,7 @@ export default function PanelTopbar({ config }) {
                                 p={2}
                                 mr={4}
                                 {...(router.pathname === '/admin/produtos' ? colors : {})}
+                                className={router.pathname === '/admin/produtos' ? 'active' : ''}
                                 onClick={() => router.push('/admin/produtos')}
                             >
                                 <HStack>
@@ -147,6 +148,7 @@ export default function PanelTopbar({ config }) {
                                 p={2}
                                 mr={4}
                                 {...(router.pathname === '/admin/usuarios' ? colors : {})}
+                                className={router.pathname === '/admin/usuarios' ? 'active' : ''}
                                 onClick={() => router.push('/admin/usuarios')}
                             >
                                 <HStack>
@@ -159,6 +161,7 @@ export default function PanelTopbar({ config }) {
                                 cursor="pointer"
                                 p={2}
                                 {...(router.pathname === '/admin/configuracoes' ? colors : {})}
+                                className={router.pathname === '/admin/configuracoes' ? 'active' : ''}
                                 onClick={() => router.push('/admin/configuracoes')}
                             >
                                 <HStack>

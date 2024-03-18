@@ -6,6 +6,7 @@ import {
     Text
 } from "@chakra-ui/react";
 import moment from "moment";
+import 'moment/locale/pt-br'
 import { AiFillStar } from "react-icons/ai";
 import Rating from "react-rating";
 

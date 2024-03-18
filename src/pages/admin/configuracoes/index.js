@@ -44,7 +44,8 @@ import {
     Textarea,
     Tag,
     TagLabel,
-    FormHelperText
+    FormHelperText,
+    Select
 } from "@chakra-ui/react"
 import { getCookie } from "cookies-next"
 import CodeMirror from '@uiw/react-codemirror';
@@ -88,6 +89,8 @@ export default function Configuration({ config }) {
     const [customCss, setCustomCss] = useState(config && config?.custom_css ? config.custom_css : "")
     const [copyright, setCopyright] = useState(config && config?.copyright ? config.copyright : "")
     const [pixel, setPixel] = useState(config && config?.pixel ? config.pixel : "")
+    const [showRatings, setShowRatings] = useState(config && config?.show_ratings ? config.show_ratings : "")
+    const [showReviews, setShowReviews] = useState(config && config?.show_reviews ? config.show_reviews : "")
     const [socialNetworks, setSocialNetworks] = useState(config && config?.social_networks ? config.social_networks : {})
     const [Facebook, setFacebook] = useState(config && config?.social_networks ? config?.social_networks?.facebook : "")
     const [Instagram, setInstagram] = useState(config && config?.social_networks ? config?.social_networks?.instagram : "")
@@ -166,8 +169,10 @@ export default function Configuration({ config }) {
             site_name: siteName,
             site_description: siteDescription,
             home_title: homeTitle,
-            home_subtitle: homeSubtitle,
+            home_subtitle: homeSubTitle,
             site_keys: siteKeysText,
+            show_ratings: showRatings,
+            show_reviews: showReviews,
             copyright: copyright,
             logo: compressedLogo,
             favicon: compressedFavicon,
@@ -347,6 +352,22 @@ export default function Configuration({ config }) {
                     </FormControl>
 
                     <FormControl mt={4}>
+                        <FormLabel>Mostrar nota</FormLabel>
+                        <Select disabled={isLoading} onChange={(e) => setShowRatings(e.target.value)} value={showRatings} placeholder="Mostrar avaliações">
+                            <option value="true">Sim</option>
+                            <option value="false">Não</option>
+                        </Select>
+                    </FormControl>
+
+                    <FormControl mt={4}>
+                        <FormLabel>Mostrar avaliações</FormLabel>
+                        <Select disabled={isLoading} onChange={(e) => setShowReviews(e.target.value)} value={showReviews} placeholder="Mostrar categorias">
+                            <option value="true">Sim</option>
+                            <option value="false">Não</option>
+                        </Select>
+                    </FormControl>
+
+                    <FormControl mt={4}>
                         <FormLabel>Logo</FormLabel>
                         <HStack opacity={isLoading ? 0.5 : 1}>
                             {compressedLogo ? (
@@ -459,12 +480,19 @@ export default function Configuration({ config }) {
                                 <Input ref={colorDarkRef} display="none" type="color" value={darkColor} onChange={(e) => handleChangeTheme(e.target, 'dark')} />
                             </Flex>
                         </Flex>
-                        <FormHelperText color="red.500" cursor="pointer" onClick={() => {
+                        <FormHelperText color="red.500" mt={2} >Você também pode usar as variaveis abaixo no css</FormHelperText>
+                        <chakra.code display="flex" flexDir="column">
+                            <span>--primary</span>
+                            <span>--secondary</span>
+                            <span>--light</span>
+                            <span>--dark</span>
+                        </chakra.code>
+                        <Button color="red.500!important" cursor="pointer" mt={2} onClick={() => {
                             setPrimaryColor("#31bf6e")
                             setSecondaryColor("#590ca6")
                             setLightColor("#F7FAFC")
                             setDarkColor("#1a202c")
-                        }}>Restaurar o padrão</FormHelperText>
+                        }}>Restaurar o padrão</Button>
                     </FormControl>
 
                     <FormControl mt={4} w="100%">

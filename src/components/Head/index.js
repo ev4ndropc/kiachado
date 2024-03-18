@@ -19,6 +19,12 @@ export default function Header({ pageTitle, children, config }) {
             <title>{pageTitle ? `${pageTitle} - ${config && config?.site_name ? config?.site_name : ''} ` : config && config?.site_name ? config?.site_name : ''}</title>
             <style>
                 {`
+                    :root {
+                     --primary: ${config && config?.theme?.primary};
+                     --secondary: ${config && config?.theme?.secondary};
+                     --light: ${config && config?.theme?.light};
+                     --dark: ${config && config?.theme?.dark};   
+                    }
                     .css-krpuct,
                     .css-rq199c,
                     .css-1v5z1kv{
@@ -55,8 +61,13 @@ export default function Header({ pageTitle, children, config }) {
                     li:not(.active) svg {
                         fill: ${config && config?.theme?.dark} !important;
                     }
-                    .css-1mclrct {
+                    .mobile-menu li.active {
                         background: ${config && config?.theme?.primary}!important;
+                        color: ${config && config?.theme?.light}!important;
+                    }
+                    .mobile-menu li.active p {
+                        background: ${config && config?.theme?.primary}!important;
+                        color: ${config && config?.theme?.light}!important;
                     }
                     a.chakra-link:not(.chakra-stack *),
                     a.chakra-link.chakra-button.btn {

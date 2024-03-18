@@ -92,7 +92,6 @@ export default function Products({ config }) {
         const json = await response.json()
         if (json.ok) {
             setProducts({ data: json.data })
-            console.log(json.data)
         } else {
             return toast({
                 status: "error",
@@ -488,7 +487,6 @@ export default function Products({ config }) {
                                                             </Text>
                                                             <Icon ml={2} as={AiFillEye} />
                                                         </Flex>
-
                                                     }
                                                     <Flex mt={4} justifyContent="center">
                                                         <Button mr={2} colorScheme="blue" className="edit-button" leftIcon={<AiOutlineEdit />} onClick={() => openModalEdit(product.id)}>Editar</Button>

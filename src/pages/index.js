@@ -12,7 +12,8 @@ import {
   SimpleGrid,
   Stack,
   Text,
-  useColorModeValue
+  useColorModeValue,
+  useDisclosure
 } from '@chakra-ui/react'
 
 import Head from '../components/Head'
@@ -20,10 +21,12 @@ import Topbar from '../components/Topbar';
 import Main from '../components/Main'
 import Footer from '../components/Footer'
 import ProductCard from '../components/ProductCard';
+import parse from 'html-react-parser';
 
 import Logo from '../assets/logo.png'
 import config from '../config';
 import { BsSearch } from 'react-icons/bs';
+import Reviews from '../components/Reviews';
 
 export default function Home({ products, config }) {
 
@@ -62,13 +65,10 @@ export default function Home({ products, config }) {
                 fontSize={{ base: '3xl', sm: '4xl', md: '6xl' }}
                 fontFamily="'Poppins', sans-serif!important"
                 lineHeight={'110%'}>
-                {config && config?.home_title ? config.home_title : 'Os melhores achados da internet'} <br />
-                <Text as={'span'} color={config && config?.theme?.primary ? `${config.theme.primary}!important` : 'green!important'}>
-                  você encontra aqui
-                </Text>
+                {config && config?.home_title ? parse(config.home_title) : 'Os melhores achados da internet'} <br />
               </Heading>
               <Text color={'gray.500'}>
-                {config && config?.home_subtitle ? config.home_subtitle : 'Nós encontramos e listamos os produtos mais inovadores, com o melhor preço e o melhor vendedor.Tudo para que você não tenha dor de cabeça na hora de sua compra.'}
+                {config && config?.home_subtitle ? parse(config.home_subtitle) : 'Nós encontramos e listamos os produtos mais inovadores, com o melhor preço e o melhor vendedor.Tudo para que você não tenha dor de cabeça na hora de sua compra.'}
               </Text>
               <InputGroup className='search-product'>
                 <InputLeftElement mt={1}>
@@ -97,7 +97,7 @@ export default function Home({ products, config }) {
                 products.map(product => {
                   return (
                     <Stack key={product.id}>
-                      <ProductCard product={product} />
+                      <ProductCard product={product} config={config} />
                     </Stack>
                   )
                 })
@@ -119,10 +119,10 @@ export default function Home({ products, config }) {
       </Flex>
 
       <Footer config={config} />
-
     </Main>
   )
 }
+
 
 export async function getServerSideProps({ req, res }) {
   try {
@@ -139,9 +139,11 @@ export async function getServerSideProps({ req, res }) {
       }
     }
   } catch (error) {
+    console.log(error)
     return {
       props: {
-        products: []
+        products: [],
+        config: {}
       }
     }
   }
