@@ -1,7 +1,7 @@
 window.addEventListener('load', (event) => {
     const DEFAULT_URL = "https://www.kiachado.com"
 
-    chrome.storage.local.get('token', function (data) {
+    chrome.storage.local.get('token', async function (data) {
         if (data?.token) {
             const token = data.token
             let import_reviews = false
@@ -41,60 +41,71 @@ window.addEventListener('load', (event) => {
                     image.style = 'width: 48px; height: 48px; position: fixed; bottom: 20px; right: 20px; background:#fff;border-radius: 8px;padding:6px; cursor:pointer; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); z-index: 9999;';
                     document.querySelector('body').appendChild(image);
 
-                    document.querySelector("#kiachado-import").addEventListener("click", function () {
+                    const fetchPage = await fetch(window.location.href).then(response => response.text())
+
+                    const pageDocument = new DOMParser().parseFromString(fetchPage, "text/html")
+                    console.log(pageDocument)
+
+                    document.querySelector("#kiachado-import").addEventListener("click", async function () {
                         let reviews
-                        const product_name = document.querySelector('#productTitle').innerText;
-                        const product_image = document.querySelector('#imgTagWrapperId img').src;
-                        const product_rating = document.querySelector('#acrPopover span.a-icon-alt').innerText.split('de')[0].trim().replace(',', '.')
+                        const product_name = pageDocument.querySelector('#productTitle').innerText;
+                        const product_image = pageDocument.querySelector('#imgTagWrapperId img').src;
+                        const product_rating = pageDocument.querySelector('#acrPopover span.a-icon-alt').innerText.split('de')[0].trim().replace(',', '.')
                         const product_url = window.location.href;
                         if (import_reviews) {
-                            if (document.querySelector('#aplus_feature_div')) {
-                                document.querySelector('#aplus_feature_div').remove()
+                            if (pageDocument.querySelector('#aplus_feature_div')) {
+                                pageDocument.querySelector('#aplus_feature_div').remove()
                             }
-                            scrollToSmoothly(document.body.scrollHeight, 5000);
-                            setTimeout(async () => {
-                                reviews = Array.from(document.querySelectorAll('.a-section.review')).map(review => {
-                                    const review_rating = review.querySelector('.a-icon-alt').innerText.split('de')[0].trim().replace(',', '.')
-                                    const review_text = review.querySelector('.review-text-content span').innerText
-                                    const review_profile_avatar = review.querySelector('.a-profile-avatar img').src
-                                    const review_profile_name = review.querySelector('.a-profile-name').innerText
-                                    var review_date = review.querySelector('span[data-hook="review-date"]').innerText
+                            if (pageDocument.querySelector("#btfContent2_feature_div > div")) {
+                                pageDocument.querySelector("#btfContent2_feature_div > div").remove()
+                            }
 
-                                    review_date = review_date.split(' em ')[1].trim()
+                            reviews = Array.from(pageDocument.querySelectorAll('.a-section.review')).map(review => {
+                                const review_rating = review.querySelector('.a-icon-alt').innerText.split('de')[0].trim().replace(',', '.')
+                                var review_text = review.querySelector('.review-text-content span:last-child').innerText;
+                                const review_profile_avatar = review.querySelector('.a-profile-avatar img').getAttribute('data-src');
+                                const review_profile_name = review.querySelector('.a-profile-name').innerText
+                                var review_date = review.querySelector('span[data-hook="review-date"]').innerText
 
-                                    return {
-                                        review_rating,
-                                        review_text,
-                                        review_profile_avatar: review_profile_avatar.includes('grey-pixel.gif') ? 'https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/default._CR0,0,1024,1024_SX48_.png' : review_profile_avatar,
-                                        review_profile_name,
-                                        review_date
-                                    }
-                                })
+                                review_date = review_date.split(' em ')[1].trim()
 
-                                const data = {
-                                    name: product_name,
-                                    image: product_image,
-                                    rating: product_rating,
-                                    platform: 'amazon',
-                                    link: product_url,
-                                    reviews,
+                                if (review_text.includes('A mídia não pôde ser carregada.')) {
+                                    review_text = review.querySelector('.cr-lightbox-review-body').innerText
                                 }
 
-                                const saveProduct = await fetch(`${DEFAULT_URL}/api/products/add`, {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'User-Agent': 'insomnia/2023.5.8',
-                                        Authorization: `Bearer ${token}`,
-                                    },
-                                    body: JSON.stringify(data)
-                                })
-
-                                const saveJson = await saveProduct.json()
-                                if (saveJson.ok) {
-                                    window.alert('Produtos importados com sucesso!')
+                                return {
+                                    review_rating,
+                                    review_text,
+                                    review_profile_avatar: review_profile_avatar.includes('grey-pixel.gif') ? 'https://images-na.ssl-images-amazon.com/images/S/amazon-avatars-global/default._CR0,0,1024,1024_SX48_.png' : review_profile_avatar,
+                                    review_profile_name,
+                                    review_date
                                 }
-                            }, 5000);
+                            })
+
+
+                            const data = {
+                                name: product_name,
+                                image: product_image,
+                                rating: product_rating,
+                                platform: 'amazon',
+                                link: product_url,
+                                reviews,
+                            }
+
+                            const saveProduct = await fetch(`${DEFAULT_URL}/api/products/add`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'User-Agent': 'insomnia/2023.5.8',
+                                    Authorization: `Bearer ${token}`,
+                                },
+                                body: JSON.stringify(data)
+                            })
+
+                            const saveJson = await saveProduct.json()
+                            if (saveJson.ok) {
+                                window.alert('Produtos importados com sucesso!')
+                            }
                         }
 
 

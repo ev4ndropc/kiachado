@@ -9,6 +9,7 @@ import moment from "moment";
 import 'moment/locale/pt-br'
 import { AiFillStar } from "react-icons/ai";
 import Rating from "react-rating";
+import parse from 'html-react-parser';
 
 export default function Reviews({ reviews }) {
     return (
@@ -27,7 +28,7 @@ export default function Reviews({ reviews }) {
                         quiet
                     />
                     <Text mt={-1} mb={2} fontSize={12}>Avaliado em {moment(review.created_at).format('DD [de] MMMM [de] YYYY')}</Text>
-                    <Text fontSize={14}>{review.review_text}</Text>
+                    <Text fontSize={14}>{parse(review.review_text)}</Text>
                 </Flex>
             ))}
         </Flex>
