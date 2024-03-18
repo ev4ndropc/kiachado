@@ -11,6 +11,8 @@ exports.seed = async function (knex) {
       logo: '/images/logo.png',
       favicon: '/images/icon.png',
       site_name: 'Ki Achado',
+      show_reviews: true,
+      show_ratings: true,
       site_description: 'Ki Achado - Os melhores achados da internet',
       home_title: 'Os melhores achados da internet <span style="color:var(--primary)">você encontra aqui</span>',
       home_subtitle: 'Nós encontramos e listamos os produtos mais inovadores, com o melhor preço e o melhor vendedor. Tudo para que você não tenha dor de cabeça na hora de sua compra.',
