@@ -117,9 +117,9 @@ export default function ProductCard({ product, config }) {
                             borderColor="transparent"
                             ml="-2px"
                             _hover={{
-                                borderColor: config && config.primaryColor ? config.primaryColor : 'blue.500',
+                                borderColor: config && config?.theme?.primary ? config?.theme?.primary : 'blue.500',
                                 borderRadius: 'md',
-                                color: config && config.primaryColor ? config.primaryColor : 'blue.500',
+                                color: config && config?.theme?.primary ? config?.theme?.primary : 'blue.500',
                             }}
                         >
                             <Text ml={2}>
