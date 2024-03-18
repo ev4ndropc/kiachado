@@ -48,7 +48,9 @@ window.addEventListener('load', (event) => {
                         const product_rating = document.querySelector('#acrPopover span.a-icon-alt').innerText.split('de')[0].trim().replace(',', '.')
                         const product_url = window.location.href;
                         if (import_reviews) {
-                            document.querySelector('#aplus_feature_div').remove()
+                            if (document.querySelector('#aplus_feature_div')) {
+                                document.querySelector('#aplus_feature_div').remove()
+                            }
                             scrollToSmoothly(document.body.scrollHeight, 5000);
                             setTimeout(async () => {
                                 reviews = Array.from(document.querySelectorAll('.a-section.review')).map(review => {
@@ -58,7 +60,7 @@ window.addEventListener('load', (event) => {
                                     const review_profile_name = review.querySelector('.a-profile-name').innerText
                                     var review_date = review.querySelector('span[data-hook="review-date"]').innerText
 
-                                    review_date = review_date.split('em')[1].trim()
+                                    review_date = review_date.split(' em ')[1].trim()
 
                                     return {
                                         review_rating,

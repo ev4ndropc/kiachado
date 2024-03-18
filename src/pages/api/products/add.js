@@ -34,6 +34,22 @@ export default async function addProducts(request, response) {
             created_at: moment().format()
         }).into('products').returning('*')
 
+        function formatDate(date) {
+            const meses = {
+                janeiro: 0, fevereiro: 1, março: 2, abril: 3, maio: 4, junho: 5,
+                julho: 6, agosto: 7, setembro: 8, outubro: 9, novembro: 10, dezembro: 11
+            };
+
+            const partesData = dataString.split(' ');
+            const dia = parseInt(partesData[0], 10);
+            const mes = meses[partesData[2].toLowerCase()];
+            const ano = parseInt(partesData[4], 10);
+
+            const data = new Date(ano, mes, dia);
+
+            return data;
+        }
+
         if (reviews) {
             var data = reviews.map(review => ({
                 product_id: product[0].id,
@@ -41,7 +57,7 @@ export default async function addProducts(request, response) {
                 review_text: review.review_text,
                 review_profile_avatar: review.review_profile_avatar,
                 review_profile_name: review.review_profile_name,
-                created_at: moment(review.review_date).format()
+                created_at: platform == 'amazon' ? moment(formatDate(review.review_date)).format() : moment(review.review_date).format()
             }))
             await database.insert(data).into('reviews').returning('*')
         }
