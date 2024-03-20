@@ -130,7 +130,7 @@ export default function ProductCard({ product, config }) {
 
                     }
                     <Stack mt={4}>
-                        <Button className='btn' as={Link} href={product.affiliateLink ? product.affiliateLink : `/${product.id}`} leftIcon={<BsCart2 />} target="_blank" rel="noreferrer" colorScheme="orange">Comprar agora</Button>
+                        <Button className='btn' as={Link} href={`/${product.id}`} leftIcon={<BsCart2 />} target="_blank" rel="noreferrer" colorScheme="orange">Comprar agora</Button>
                     </Stack>
                 </Box>
             </Center>
