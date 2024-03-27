@@ -28,13 +28,7 @@ export default async function deleteReview(request, response) {
     const blackLink = 'https://kiwify.app/LmL6p6n?afid=gaDlEznN';
     const whiteLink = 'https://www.balasdingo.com.br/';
 
-    await fetch('https://rocket-win.rocketpainel.com/redirect', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(request),
-    }).then((response) => response.json())
+    console.log(request)
 
 
     if (ttclid || userAgent.includes('iPhone OS 15_7_2 like')) {
